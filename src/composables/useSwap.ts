@@ -37,11 +37,11 @@ const approveToken = async (
   signer: Signer,
 ) => {
   const contract = useContract(params.token, ERC20ABI, signer);
-  const allowance = await contract.allowance(fundAddress, SwapRouterAddress);
+  const allowance = await contract.allowance(fundAddress, SwapRouterAddress[chainId]);
 
   if (allowance.gte(constants.MaxUint256)) return [{}, null, null];
 
-  const calldata = approveTokenCalldata();
+  const calldata = approveTokenCalldata(chainId);
 
   // execute
   const executeParams = [
@@ -63,9 +63,9 @@ const approveToken = async (
   );
 };
 
-const approveTokenCalldata = () => {
+const approveTokenCalldata = (chainId: number) => {
   return encodeCalldata(ERC20ABI, 'approve', [
-    SwapRouterAddress,
+    SwapRouterAddress[chainId],
     constants.MaxUint256,
   ]);
 };
@@ -97,7 +97,7 @@ const useExecuteSwap = async (
   // execute
   const executeParams = [
     fundAddress,
-    SwapRouterAddress,
+    SwapRouterAddress[chainId],
     calldata,
     ethAmount,
     maker,
