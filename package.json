@@ -1,6 +1,6 @@
 {
   "name": "@defund-protocol/v1-sdk",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "DeFund Protocol v1 SDK",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -12,13 +12,14 @@
   "keywords": [],
   "author": "rex.s.bit@gmail.com",
   "license": "MIT",
+  "dependencies": {
+    "@defund-protocol/token-list": "github:DeFund-protocol/token-list",
+    "@uniswap/v3-sdk": "^3.9.0"
+  },
   "devDependencies": {
     "@ethersproject/abstract-provider": "^5.7.0",
-    "@uniswap/v3-sdk": "^3.9.0",
-    "dotenv": "^16.0.3",
-    "ethers": "5",
-    "typescript": "^5.0.3",
-    "token-list": "DeFund-procotol/token-list"
+    "ethers": "^5.7.2",
+    "typescript": "^5.0.3"
   },
   "files": [
     "lib"

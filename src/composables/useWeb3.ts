@@ -20,14 +20,9 @@ const SendTransaction = async (
       overrides.gasLimit = estimateGas.mul(110).div(100);
     }
 
-    return [await contract[functionFragment](...params, overrides), null];
+    return await contract[functionFragment](...params, overrides)
   } catch (e: any) {
-    if (e.body) {
-      const body = JSON.parse(e.body);
-      return [null, body.error.message, body.error.code];
-    } else {
-      return [null, e?.message || e?.reason || e?.error, e?.code];
-    }
+    throw e;
   }
 };
 

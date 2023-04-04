@@ -12,5 +12,5 @@ export type SwapOptions = {
     gasPrice?: number;
     gasLimit?: BigNumber;
 };
-declare const useExecuteSwap: (maker: string, fundAddress: string, params: SwapParams, options: SwapOptions, chainId: number, signer: Signer) => Promise<any[]>;
+declare const useExecuteSwap: (maker: string, fundAddress: string, params: SwapParams, options: SwapOptions, chainId: number, signer: Signer) => Promise<any>;
 export { useExecuteSwap };
