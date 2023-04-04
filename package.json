@@ -10,7 +10,7 @@
     "build": "tsc"
   },
   "keywords": [],
-  "author": "rex.s.bit@gmail.com",
+  "author": "Rex<rex.s.bit@gmail.com>",
   "license": "MIT",
   "dependencies": {
     "@defund-protocol/token-list": "github:DeFund-protocol/token-list",
