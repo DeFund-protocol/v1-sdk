@@ -1,16 +1,13 @@
 {
     "compilerOptions": {
-        "target": "ESNext",
-        "module": "ESNext",
+        "target": "es5",
+        "module": "CommonJS",
         "declaration": true,
         "outDir": "./lib/",
         "strict": true,
         "moduleResolution": "node",
         "esModuleInterop": true,
         "resolveJsonModule": true,
-        "lib": [
-            "ESNext"
-        ],
     },
     "include": [
         "src",
