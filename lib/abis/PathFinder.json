@@ -1,0 +1,387 @@
+[
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_quoter",
+                "type": "address"
+            },
+            {
+                "internalType": "address[]",
+                "name": "_tokens",
+                "type": "address[]"
+            },
+            {
+                "internalType": "address",
+                "name": "_fundManager",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "previousOwner",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "OwnershipTransferred",
+        "type": "event"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "tokenIn",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "tokenOut",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "amountIn",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address[]",
+                "name": "tokens",
+                "type": "address[]"
+            }
+        ],
+        "name": "bestExactInputPath",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "bytes",
+                        "name": "path",
+                        "type": "bytes"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "expectedAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint160[]",
+                        "name": "sqrtPriceX96AfterList",
+                        "type": "uint160[]"
+                    },
+                    {
+                        "internalType": "uint32[]",
+                        "name": "initializedTicksCrossedList",
+                        "type": "uint32[]"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "gasEstimate",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct IPathFinder.TradePath",
+                "name": "path",
+                "type": "tuple"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "tokenIn",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "tokenOut",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "amountOut",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address[]",
+                "name": "tokens",
+                "type": "address[]"
+            }
+        ],
+        "name": "bestExactOutputPath",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "bytes",
+                        "name": "path",
+                        "type": "bytes"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "expectedAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint160[]",
+                        "name": "sqrtPriceX96AfterList",
+                        "type": "uint160[]"
+                    },
+                    {
+                        "internalType": "uint32[]",
+                        "name": "initializedTicksCrossedList",
+                        "type": "uint32[]"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "gasEstimate",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct IPathFinder.TradePath",
+                "name": "path",
+                "type": "tuple"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "tokenIn",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "tokenOut",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "name": "exactInputPath",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "bytes",
+                        "name": "path",
+                        "type": "bytes"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "expectedAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint160[]",
+                        "name": "sqrtPriceX96AfterList",
+                        "type": "uint160[]"
+                    },
+                    {
+                        "internalType": "uint32[]",
+                        "name": "initializedTicksCrossedList",
+                        "type": "uint32[]"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "gasEstimate",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct IPathFinder.TradePath",
+                "name": "path",
+                "type": "tuple"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "tokenIn",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "tokenOut",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "name": "exactOutputPath",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "bytes",
+                        "name": "path",
+                        "type": "bytes"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "expectedAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint160[]",
+                        "name": "sqrtPriceX96AfterList",
+                        "type": "uint160[]"
+                    },
+                    {
+                        "internalType": "uint32[]",
+                        "name": "initializedTicksCrossedList",
+                        "type": "uint32[]"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "gasEstimate",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct IPathFinder.TradePath",
+                "name": "path",
+                "type": "tuple"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "fundManager",
+        "outputs": [
+            {
+                "internalType": "contract IFundManager",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getFees",
+        "outputs": [
+            {
+                "internalType": "uint24[]",
+                "name": "",
+                "type": "uint24[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getSharedTokens",
+        "outputs": [
+            {
+                "internalType": "address[]",
+                "name": "",
+                "type": "address[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "owner",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "quoter",
+        "outputs": [
+            {
+                "internalType": "contract IQuoterV2",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "renounceOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "transferOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint24[]",
+                "name": "_fees",
+                "type": "uint24[]"
+            }
+        ],
+        "name": "updateFees",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address[]",
+                "name": "tokens",
+                "type": "address[]"
+            }
+        ],
+        "name": "updateTokens",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    }
+]
