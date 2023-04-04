@@ -1,0 +1,25 @@
+{
+  "name": "@defund-protocol/v1-sdk",
+  "version": "0.0.1",
+  "description": "DeFund Protocol v1 SDK",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc"
+  },
+  "keywords": [],
+  "author": "rex.s.bit@gmail.com",
+  "license": "MIT",
+  "devDependencies": {
+    "@ethersproject/abstract-provider": "^5.7.0",
+    "@uniswap/v3-sdk": "^3.9.0",
+    "dotenv": "^16.0.3",
+    "ethers": "5",
+    "typescript": "^5.0.3",
+    "token-list": "DeFund-procotol/token-list"
+  },
+  "files": [
+    "lib"
+  ]
+}
