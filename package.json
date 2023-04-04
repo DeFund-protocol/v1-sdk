@@ -4,6 +4,7 @@
   "description": "DeFund Protocol v1 SDK",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc"
