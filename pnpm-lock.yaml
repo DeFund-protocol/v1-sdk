@@ -5,6 +5,7 @@ specifiers:
   '@ethersproject/abstract-provider': ^5.7.0
   '@uniswap/v3-sdk': ^3.9.0
   ethers: ^5.7.2
+  prettier: ^2.8.7
   typescript: ^5.0.3
 
 dependencies:
@@ -14,6 +15,7 @@ dependencies:
 devDependencies:
   '@ethersproject/abstract-provider': 5.7.0
   ethers: 5.7.2
+  prettier: 2.8.7
   typescript: 5.0.3
 
 packages:
@@ -2058,6 +2060,12 @@ packages:
     engines: {node: '>=8.6'}
     dev: false
 
+  /prettier/2.8.7:
+    resolution: {integrity: sha512-yPngTo3aXUUmyuTjeTUT75txrf+aMh9FiD7q9ZE/i6r0bPb22g4FsE6Y338PQX1bmfy08i9QQCB7/rcUAVntfw==}
+    engines: {node: '>=10.13.0'}
+    hasBin: true
+    dev: true
+
   /qs/6.11.1:
     resolution: {integrity: sha512-0wsrzgTz/kAVIeuxSjnpGC56rzYtr6JT/2BwEvMaPhFIoYa1aGO8LbzuU1R0uUYQkLpWBTOj0l/CLAJB64J6nQ==}
     engines: {node: '>=0.6'}
@@ -2485,7 +2493,7 @@ packages:
     dev: false
 
   github.com/DeFund-protocol/token-list/cbd6805ce1839a31bde41070860366618762cc03:
-    resolution: {commit: cbd6805ce1839a31bde41070860366618762cc03, repo: git+ssh://git@github.com/DeFund-protocol/token-list.git, type: git}
+    resolution: {tarball: https://codeload.github.com/DeFund-protocol/token-list/tar.gz/cbd6805ce1839a31bde41070860366618762cc03}
     name: '@defund-protocol/token-list'
     version: 1.1.0
     dev: false

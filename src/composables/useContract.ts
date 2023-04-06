@@ -13,7 +13,4 @@ const useEncodeFuncData = (abi: any, funcName: string, funcData: any) => {
   return useInterface(abi).encodeFunctionData(funcName, funcData);
 };
 
-export {
-  useContract,
-  useEncodeFuncData,
-};
+export { useContract, useEncodeFuncData };

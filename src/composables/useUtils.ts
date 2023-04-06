@@ -16,7 +16,4 @@ const isEqualAddress = (address1: string, address2: string) => {
   );
 };
 
-export {
-  isAddress,
-  isEqualAddress,
-};
+export { isAddress, isEqualAddress };

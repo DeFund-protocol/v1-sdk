@@ -6,7 +6,7 @@ import { WethAddress } from '../../constants/token';
 import { useContract } from '../useContract';
 import { isEqualAddress } from '../useUtils';
 
-const pathFinderContract =  (chainId: number, provider: Signer | Provider) => {
+const pathFinderContract = (chainId: number, provider: Signer | Provider) => {
   return useContract(PathFinderAddress[chainId], PathFinderABI, provider);
 };
 
@@ -20,7 +20,7 @@ const exactInputPath = async (
   return await pathFinderContract(chainId, provider).callStatic.exactInputPath(
     tokenIn,
     tokenOut,
-    amount,
+    amount
   );
 };
 
@@ -34,7 +34,7 @@ const exactOutputPath = async (
   return await pathFinderContract(chainId, provider).callStatic.exactOutputPath(
     tokenIn,
     tokenOut,
-    amount,
+    amount
   );
 };
 
@@ -45,7 +45,7 @@ const fallbackPath = (token0: string, token1: string, chainId: number) => {
   } else {
     return encodePath(
       [token0, weth, token1],
-      [FeeAmount.MEDIUM, FeeAmount.MEDIUM],
+      [FeeAmount.MEDIUM, FeeAmount.MEDIUM]
     );
   }
 };

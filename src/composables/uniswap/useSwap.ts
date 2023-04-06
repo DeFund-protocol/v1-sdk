@@ -20,7 +20,7 @@ export type SwapParams = {
   amountOut: BigNumber;
   useNative: boolean;
   expiration: number;
-}
+};
 
 export class UniswapSwap {
   readonly chainId: number;
@@ -56,7 +56,7 @@ export class UniswapSwap {
         calldata = await this.exactOutPutCalldata(params, fundAddress);
         break;
       default:
-        throw new Error(`Invalid opType: ${params.opType}`)
+        throw new Error(`Invalid opType: ${params.opType}`);
     }
 
     // execute
@@ -66,7 +66,7 @@ export class UniswapSwap {
       calldata,
       ethAmount,
       maker,
-      true,
+      true
     ];
 
     return await SendTransaction(
@@ -85,29 +85,31 @@ export class UniswapSwap {
       params.tokenOut,
       params.amountIn,
       this.chainId,
-      this.signer,
+      this.signer
     );
 
     const swapParams = {
       recipient: this.calcRecipient(params, recipient),
       path: path.path,
       amountIn: params.amountIn,
-      amountOutMinimum: params.amountOut,
+      amountOutMinimum: params.amountOut
     };
 
-    const calldata = this.encodeCalldata(SwapRouter02ABI, 'exactInput', [swapParams]);
+    const calldata = this.encodeCalldata(SwapRouter02ABI, 'exactInput', [
+      swapParams
+    ]);
     if (!params.useNative) return calldata;
     if (!isEqualAddress(params.tokenOut, this.wethAddress)) return calldata;
 
     const unwrap = this.encodeCalldata(
       SwapRouter02ABI,
       'unwrapWETH9(uint256,address)',
-      [params.amountOut, recipient],
+      [params.amountOut, recipient]
     );
 
     return this.encodeCalldata(SwapRouter02ABI, 'multicall(uint256,bytes[])', [
       params.expiration,
-      [calldata, unwrap],
+      [calldata, unwrap]
     ]);
   }
 
@@ -124,31 +126,35 @@ export class UniswapSwap {
       recipient: this.calcRecipient(params, recipient),
       path: path.path,
       amountOut: params.amountOut,
-      amountInMaximum: params.amountIn,
+      amountInMaximum: params.amountIn
     };
 
-    const output = this.encodeCalldata(SwapRouter02ABI, 'exactOutput', [swapParams]);
+    const output = this.encodeCalldata(SwapRouter02ABI, 'exactOutput', [
+      swapParams
+    ]);
 
     if (!params.useNative) return output;
 
     switch (true) {
       case isEqualAddress(params.tokenIn, this.wethAddress):
         const refund = this.encodeCalldata(SwapRouter02ABI, 'refundETH()', []);
-        return this.encodeCalldata(SwapRouter02ABI, 'multicall(uint256,bytes[])', [
-          params.expiration,
-          [output, refund],
-        ]);
+        return this.encodeCalldata(
+          SwapRouter02ABI,
+          'multicall(uint256,bytes[])',
+          [params.expiration, [output, refund]]
+        );
       case isEqualAddress(params.tokenOut, this.wethAddress):
         const unwrap = this.encodeCalldata(
           SwapRouter02ABI,
           'unwrapWETH9(uint256,address)',
-          [params.amountOut, recipient],
+          [params.amountOut, recipient]
         );
 
-        return this.encodeCalldata(SwapRouter02ABI, 'multicall(uint256,bytes[])', [
-          params.expiration,
-          [output, unwrap],
-        ]);
+        return this.encodeCalldata(
+          SwapRouter02ABI,
+          'multicall(uint256,bytes[])',
+          [params.expiration, [output, unwrap]]
+        );
       default:
         return output;
     }
@@ -158,10 +164,13 @@ export class UniswapSwap {
     maker: string,
     fundAddress: string,
     params: any,
-    overrides?: Overrides,
+    overrides?: Overrides
   ) {
     const contract = useContract(params.token, ERC20ABI, this.signer);
-    const allowance = await contract.allowance(fundAddress, this.swapRouterAddress);
+    const allowance = await contract.allowance(
+      fundAddress,
+      this.swapRouterAddress
+    );
 
     if (allowance.gte(constants.MaxUint256)) return [{}, null, null];
 
@@ -174,7 +183,7 @@ export class UniswapSwap {
       calldata,
       0,
       maker,
-      true, // refund gas from fund
+      true // refund gas from fund
     ];
 
     return await SendTransaction(
@@ -185,29 +194,30 @@ export class UniswapSwap {
       overrides,
       this.signer
     );
-  };
+  }
 
   approveTokenCalldata() {
     return this.encodeCalldata(ERC20ABI, 'approve', [
       this.swapRouterAddress,
-      constants.MaxUint256,
+      constants.MaxUint256
     ]);
-  };
+  }
 
   calcEthAmount(params: SwapParams) {
     if (!params.useNative) return constants.Zero;
-    if (!isEqualAddress(params.tokenIn, this.wethAddress)) return constants.Zero;
+    if (!isEqualAddress(params.tokenIn, this.wethAddress))
+      return constants.Zero;
     return params.amountIn;
-  };
+  }
 
   calcRecipient(params: SwapParams, recipient: string) {
     if (!params.useNative) return recipient;
     if (!isEqualAddress(params.tokenOut, this.wethAddress)) return recipient;
 
     return NativeETHAddress;
-  };
+  }
 
   encodeCalldata(abi: any, method: string, params: any) {
     return useEncodeFuncData(abi, method, params);
-  };
+  }
 }
