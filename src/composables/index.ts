@@ -1,4 +1,4 @@
+export * from './uniswap/usePathFinder';
+export * from './uniswap/useSwap';
 export * from './useContract';
-export * from './usePathFinder';
-export * from './useSwap';
 

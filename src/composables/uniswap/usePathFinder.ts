@@ -1,10 +1,10 @@
 import { Provider } from '@ethersproject/abstract-provider';
 import { FeeAmount } from '@uniswap/v3-sdk';
 import { BigNumber, Signer } from 'ethers';
-import { PathFinderABI, PathFinderAddress } from '../constants/contract';
-import { WethAddress } from '../constants/token';
-import { useContract } from './useContract';
-import { isEqualAddress } from './useUtils';
+import { PathFinderABI, PathFinderAddress } from '../../constants/contract';
+import { WethAddress } from '../../constants/token';
+import { useContract } from '../useContract';
+import { isEqualAddress } from '../useUtils';
 
 const pathFinderContract =  (chainId: number, provider: Signer | Provider) => {
   return useContract(PathFinderAddress[chainId], PathFinderABI, provider);
@@ -39,7 +39,7 @@ const exactOutputPath = async (
 };
 
 const fallbackPath = (token0: string, token1: string, chainId: number) => {
-  const weth = WethAddress(chainId);
+  const weth = WethAddress[chainId];
   if (isEqualAddress(token0, weth) || isEqualAddress(weth, token1)) {
     return encodePath([token0, token1], [FeeAmount.MEDIUM]);
   } else {

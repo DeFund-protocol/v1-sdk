@@ -1,5 +1,5 @@
-import { Signer } from 'ethers';
-import { SwapOptions, SwapParams, useExecuteSwap } from './composables';
+import { Overrides, Signer } from 'ethers';
+import { SwapParams, UniswapSwap } from './composables';
 
 export class UnversalSDK {
     readonly chainId: number;
@@ -12,7 +12,7 @@ export class UnversalSDK {
         if (!this.signer.provider) throw new Error('invalid signer or provider')
     }
 
-    async executeSwap(maker: string, fundAddress: string, params: SwapParams, options: SwapOptions) {
-        return await useExecuteSwap(maker, fundAddress, params, options, this.chainId, this.signer);
+    async executeSwap(maker: string, fundAddress: string, params: SwapParams, overrides?: Overrides) {
+        return await new UniswapSwap(this.chainId, this.signer).executeSwap(maker, fundAddress, params, overrides);
     }
 }
