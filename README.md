@@ -47,9 +47,16 @@ const sdk = new UnversalSDK(chainId, signer);
 |useNative|Boolean|if one of tokenIn or tokenOut is Weth and need use ETH balance, set true, else false|
 |expiration|number||
 
+#### Overrides
+|Param|Type|Description|
+|----|----|----|
+|GasPrice|number|max gas price in gwei|
+|GasLimit|number||
+
 ```typescript
+const maker = signer.address;
 const fundAddress = 'your fund address';
-const params = {
+const swapDetails = {
     "opType": "exactInput",
     "tokenIn": "",
     "tokenOut": "",
@@ -58,5 +65,11 @@ const params = {
     "useNative": true,
     "expiration": 1698074828,
 }
-const tx =await sdk.executeSwap(signer.address, fundAddress, params, options);
+
+const overrides = {};
+
+const tx =await sdk.executeSwap(maker, fundAddress, swapDetails, overrides);
 ```
+
+### Examples
+Examples can be found at: [Examples](https://github.com/DeFund-protocol/defund-examples)
