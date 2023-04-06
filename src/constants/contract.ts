@@ -1,11 +1,13 @@
 import { default as ERC20ABI } from '../abis/ERC20.json' assert { type: 'json' };
 import { default as FundManagerABI } from '../abis/FundManager.json' assert { type: 'json' };
+import { default as FundViewerABI } from '../abis/FundViewer.json' assert { type: 'json' };
 import { default as PathFinderABI } from '../abis/PathFinder.json' assert { type: 'json' };
 import { default as SwapRouter02ABI } from '../abis/SwapRouter02.json' assert { type: 'json' };
 import { default as Weth9ABI } from '../abis/Weth9.json' assert { type: 'json' };
 
 export {
   FundManagerABI,
+  FundViewerABI,
   SwapRouter02ABI,
   PathFinderABI,
   Weth9ABI,
@@ -22,6 +24,11 @@ export type AddressMap = { [ChainId: number]: string }
 export const FundManagerAddress: AddressMap = {
   [SupportedChainId.MAINNET]: '0x22fCce8f007D61AA933e29f6dDf756d73B6F39F1',
   [SupportedChainId.GOERLI]: '0xD64A92E7df4f7fdA24861f8C080b25E33649AF46',
+}
+
+export const FundViewerAddress: AddressMap = {
+  [SupportedChainId.MAINNET]: '0x29BC2c2D717E0e712D7E64f6eC9C6586A41943a7',
+  [SupportedChainId.GOERLI]: '0x0eE48757AC762Cd93eb7AC00bCe4eFa05DD21Eb3',
 }
 
 export const PathFinderAddress: AddressMap = {
