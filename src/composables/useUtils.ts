@@ -1,8 +1,8 @@
 import { getAddress } from 'ethers/lib/utils';
 
-const isAddress = (value: any): string | false => {
+const isAddress = (value: any): boolean => {
   try {
-    return getAddress(value);
+    return getAddress(value) !== null;
   } catch {
     return false;
   }
