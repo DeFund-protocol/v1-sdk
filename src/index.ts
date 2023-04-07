@@ -2,7 +2,7 @@ import { Overrides, Signer } from 'ethers';
 import { SwapParams, UniswapSwap } from './composables';
 import { FundAssetConvert } from './composables/useAssetsConvert';
 
-export class UnversalSDK {
+export class UnversialSDK {
     readonly chainId: number;
     readonly signer: Signer;
     

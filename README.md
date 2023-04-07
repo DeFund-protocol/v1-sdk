@@ -19,6 +19,7 @@ SDK initialization requires the following parameters
 
 ```typescript
 import { UnversalSDK } from '@defund-protocol/v1-sdk';
+import { Wallet, providers } from 'ethers';
 
 const chainId = 5;
 const provider = new providers.JsonRpcProvider('your json rpc url');
