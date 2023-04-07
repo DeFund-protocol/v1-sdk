@@ -41,7 +41,8 @@ export class UniswapSwap {
     maker: string,
     fundAddress: string,
     params: SwapParams,
-    overrides?: Overrides
+    overrides?: Overrides,
+    refundGas = false
   ) {
     const ethAmount = this.calcEthAmount(params);
 
@@ -66,7 +67,7 @@ export class UniswapSwap {
       calldata,
       ethAmount,
       maker,
-      true
+      refundGas
     ];
 
     return await SendTransaction(
@@ -164,7 +165,8 @@ export class UniswapSwap {
     maker: string,
     fundAddress: string,
     params: any,
-    overrides?: Overrides
+    overrides?: Overrides,
+    refundGas = false
   ) {
     const contract = useContract(params.token, ERC20ABI, this.signer);
     const allowance = await contract.allowance(
@@ -183,7 +185,7 @@ export class UniswapSwap {
       calldata,
       0,
       maker,
-      true // refund gas from fund
+      refundGas
     ];
 
     return await SendTransaction(

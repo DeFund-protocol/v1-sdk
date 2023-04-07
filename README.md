@@ -30,12 +30,12 @@ const sdk = new UniversalSDK(chainId, signer);
 ### Swap
 
 #### Swap Params
-| Param       | Type       | Description         |
-| ----------- | ---------- | ------------------- |
-| maker       | Address    | your signer address |
-| fundAddress | Address    | your fund address   |
-| swapDetails  | SwapDetails |                     |
-| overrides   | Overrides  |                     |
+| Param       | Type        | Description         |
+| ----------- | ----------- | ------------------- |
+| maker       | Address     | your signer address |
+| fundAddress | Address     | your fund address   |
+| swapDetails | SwapDetails |                     |
+| overrides   | Overrides   |                     |
 
 #### Swap Details
 |Param|Type|Description|
@@ -66,7 +66,39 @@ const swapDetails = {
 
 const overrides = {};
 
-const tx = await sdk.executeSwap(maker, fundAddress, swapDetails, overrides);
+const tx =await sdk.executeSwap(maker, fundAddress, swapDetails, overrides);
+```
+
+### AssetsConvert
+
+#### Convert Params
+| Param          | Type           | Description         |
+| -------------- | -------------- | ------------------- |
+| maker          | Address        | your signer address |
+| fundAddress    | Address        | your fund address   |
+| convertDetails | ConvertDetails |                     |
+| overrides      | Overrides      |                     |
+
+#### Convert Details
+| Param    | Type    | Description      |
+| -------- | ------- | ---------------- |
+| ratio    | number  | ratio of tokenIn |
+| tokenIn  | Address |                  |
+| tokenOut | Address |                  |
+
+```typescript
+const maker = signer.address;
+const fundAddress = 'your fund address';
+const convertDetails = {
+    "opType": "assetsConvert",
+    "tokenIn": "",
+    "tokenOut": "",
+    "ratio": 1000,
+}
+
+const overrides = {};
+
+const tx =await sdk.executeAssetsConvert(maker, fundAddress, convertDetails, overrides);
 ```
 
 ### Examples

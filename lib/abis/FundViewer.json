@@ -1,0 +1,1143 @@
+[
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_weth9",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_proxy",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_manager",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_priceOracle",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_positionViewer",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "fund",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "caller",
+                "type": "address"
+            },
+            {
+                "internalType": "bool",
+                "name": "extend",
+                "type": "bool"
+            }
+        ],
+        "name": "getFundData",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "address",
+                        "name": "addr",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "since",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "gp",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint16",
+                        "name": "managementFee",
+                        "type": "uint16"
+                    },
+                    {
+                        "internalType": "uint24[]",
+                        "name": "carryBrackets",
+                        "type": "uint24[]"
+                    },
+                    {
+                        "internalType": "uint16[]",
+                        "name": "carryRates",
+                        "type": "uint16[]"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "underlyingToken",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "allowPosition",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "address[]",
+                        "name": "allowedTokens",
+                        "type": "address[]"
+                    },
+                    {
+                        "internalType": "address[]",
+                        "name": "allowedOperators",
+                        "type": "address[]"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "operator",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "uint16",
+                        "name": "activePositionCount",
+                        "type": "uint16"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "opened",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "finalValue",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "finalUnit",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "totalUnit",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "totalManagementFeeAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "paidDaoProfitAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "paidCarriedInterestAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "collectedManagementFeeAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "ethBalance",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "totalValue",
+                        "type": "uint256"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "uint256",
+                                "name": "totalAmount",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "totalUnit",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint24",
+                                "name": "stopLoss",
+                                "type": "uint24"
+                            },
+                            {
+                                "internalType": "uint24",
+                                "name": "buyUnitIndex",
+                                "type": "uint24"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "buyUnitLeft",
+                                "type": "uint256"
+                            },
+                            {
+                                "components": [
+                                    {
+                                        "internalType": "uint256",
+                                        "name": "amount",
+                                        "type": "uint256"
+                                    },
+                                    {
+                                        "internalType": "uint256",
+                                        "name": "unit",
+                                        "type": "uint256"
+                                    },
+                                    {
+                                        "internalType": "uint256",
+                                        "name": "time",
+                                        "type": "uint256"
+                                    }
+                                ],
+                                "internalType": "struct LpBuyAction[]",
+                                "name": "lpBuyActions",
+                                "type": "tuple[]"
+                            },
+                            {
+                                "components": [
+                                    {
+                                        "internalType": "uint256",
+                                        "name": "amount",
+                                        "type": "uint256"
+                                    },
+                                    {
+                                        "internalType": "uint256",
+                                        "name": "unit",
+                                        "type": "uint256"
+                                    },
+                                    {
+                                        "internalType": "uint256",
+                                        "name": "time",
+                                        "type": "uint256"
+                                    },
+                                    {
+                                        "internalType": "uint256",
+                                        "name": "base",
+                                        "type": "uint256"
+                                    },
+                                    {
+                                        "internalType": "uint256",
+                                        "name": "carry",
+                                        "type": "uint256"
+                                    },
+                                    {
+                                        "internalType": "uint256",
+                                        "name": "dao",
+                                        "type": "uint256"
+                                    },
+                                    {
+                                        "internalType": "uint256",
+                                        "name": "fee",
+                                        "type": "uint256"
+                                    }
+                                ],
+                                "internalType": "struct LpSellAction[]",
+                                "name": "lpSellActions",
+                                "type": "tuple[]"
+                            }
+                        ],
+                        "internalType": "struct LpDetail",
+                        "name": "callerDetail",
+                        "type": "tuple"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "gpNomination",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint16",
+                        "name": "lpCount",
+                        "type": "uint16"
+                    },
+                    {
+                        "internalType": "uint16",
+                        "name": "maxLpCount",
+                        "type": "uint16"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "firstBuyMinAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "isPublic",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "address[]",
+                        "name": "allowedLps",
+                        "type": "address[]"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "lockTime",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "uint16",
+                        "name": "lockFee",
+                        "type": "uint16"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "forbidBuy",
+                        "type": "bool"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "address",
+                                "name": "token",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "balance",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "value",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "priority",
+                                "type": "uint256"
+                            }
+                        ],
+                        "internalType": "struct TokenBalance[]",
+                        "name": "tokenBalances",
+                        "type": "tuple[]"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "address",
+                                "name": "lpAddr",
+                                "type": "address"
+                            },
+                            {
+                                "components": [
+                                    {
+                                        "internalType": "uint256",
+                                        "name": "totalAmount",
+                                        "type": "uint256"
+                                    },
+                                    {
+                                        "internalType": "uint256",
+                                        "name": "totalUnit",
+                                        "type": "uint256"
+                                    },
+                                    {
+                                        "internalType": "uint24",
+                                        "name": "stopLoss",
+                                        "type": "uint24"
+                                    },
+                                    {
+                                        "internalType": "uint24",
+                                        "name": "buyUnitIndex",
+                                        "type": "uint24"
+                                    },
+                                    {
+                                        "internalType": "uint256",
+                                        "name": "buyUnitLeft",
+                                        "type": "uint256"
+                                    },
+                                    {
+                                        "components": [
+                                            {
+                                                "internalType": "uint256",
+                                                "name": "amount",
+                                                "type": "uint256"
+                                            },
+                                            {
+                                                "internalType": "uint256",
+                                                "name": "unit",
+                                                "type": "uint256"
+                                            },
+                                            {
+                                                "internalType": "uint256",
+                                                "name": "time",
+                                                "type": "uint256"
+                                            }
+                                        ],
+                                        "internalType": "struct LpBuyAction[]",
+                                        "name": "lpBuyActions",
+                                        "type": "tuple[]"
+                                    },
+                                    {
+                                        "components": [
+                                            {
+                                                "internalType": "uint256",
+                                                "name": "amount",
+                                                "type": "uint256"
+                                            },
+                                            {
+                                                "internalType": "uint256",
+                                                "name": "unit",
+                                                "type": "uint256"
+                                            },
+                                            {
+                                                "internalType": "uint256",
+                                                "name": "time",
+                                                "type": "uint256"
+                                            },
+                                            {
+                                                "internalType": "uint256",
+                                                "name": "base",
+                                                "type": "uint256"
+                                            },
+                                            {
+                                                "internalType": "uint256",
+                                                "name": "carry",
+                                                "type": "uint256"
+                                            },
+                                            {
+                                                "internalType": "uint256",
+                                                "name": "dao",
+                                                "type": "uint256"
+                                            },
+                                            {
+                                                "internalType": "uint256",
+                                                "name": "fee",
+                                                "type": "uint256"
+                                            }
+                                        ],
+                                        "internalType": "struct LpSellAction[]",
+                                        "name": "lpSellActions",
+                                        "type": "tuple[]"
+                                    }
+                                ],
+                                "internalType": "struct LpDetail",
+                                "name": "detail",
+                                "type": "tuple"
+                            }
+                        ],
+                        "internalType": "struct LpDetailInfo[]",
+                        "name": "lpDetailInfos",
+                        "type": "tuple[]"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "uint256",
+                                "name": "tokenId",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "address",
+                                "name": "token0",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "address",
+                                "name": "token1",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "uint24",
+                                "name": "fee",
+                                "type": "uint24"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "amount0",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "amount1",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "fee0",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "fee1",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "amountValue0",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "amountValue1",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "feeValue0",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "feeValue1",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "priority",
+                                "type": "uint256"
+                            }
+                        ],
+                        "internalType": "struct LPToken[]",
+                        "name": "lpTokens",
+                        "type": "tuple[]"
+                    }
+                ],
+                "internalType": "struct FundAccountData",
+                "name": "data",
+                "type": "tuple"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "fund",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "skip",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "size",
+                "type": "uint256"
+            }
+        ],
+        "name": "getFundLpDetailInfos",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "address",
+                        "name": "lpAddr",
+                        "type": "address"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "uint256",
+                                "name": "totalAmount",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "totalUnit",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint24",
+                                "name": "stopLoss",
+                                "type": "uint24"
+                            },
+                            {
+                                "internalType": "uint24",
+                                "name": "buyUnitIndex",
+                                "type": "uint24"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "buyUnitLeft",
+                                "type": "uint256"
+                            },
+                            {
+                                "components": [
+                                    {
+                                        "internalType": "uint256",
+                                        "name": "amount",
+                                        "type": "uint256"
+                                    },
+                                    {
+                                        "internalType": "uint256",
+                                        "name": "unit",
+                                        "type": "uint256"
+                                    },
+                                    {
+                                        "internalType": "uint256",
+                                        "name": "time",
+                                        "type": "uint256"
+                                    }
+                                ],
+                                "internalType": "struct LpBuyAction[]",
+                                "name": "lpBuyActions",
+                                "type": "tuple[]"
+                            },
+                            {
+                                "components": [
+                                    {
+                                        "internalType": "uint256",
+                                        "name": "amount",
+                                        "type": "uint256"
+                                    },
+                                    {
+                                        "internalType": "uint256",
+                                        "name": "unit",
+                                        "type": "uint256"
+                                    },
+                                    {
+                                        "internalType": "uint256",
+                                        "name": "time",
+                                        "type": "uint256"
+                                    },
+                                    {
+                                        "internalType": "uint256",
+                                        "name": "base",
+                                        "type": "uint256"
+                                    },
+                                    {
+                                        "internalType": "uint256",
+                                        "name": "carry",
+                                        "type": "uint256"
+                                    },
+                                    {
+                                        "internalType": "uint256",
+                                        "name": "dao",
+                                        "type": "uint256"
+                                    },
+                                    {
+                                        "internalType": "uint256",
+                                        "name": "fee",
+                                        "type": "uint256"
+                                    }
+                                ],
+                                "internalType": "struct LpSellAction[]",
+                                "name": "lpSellActions",
+                                "type": "tuple[]"
+                            }
+                        ],
+                        "internalType": "struct LpDetail",
+                        "name": "detail",
+                        "type": "tuple"
+                    }
+                ],
+                "internalType": "struct LpDetailInfo[]",
+                "name": "list",
+                "type": "tuple[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "caller",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "role",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bool",
+                "name": "extend",
+                "type": "bool"
+            }
+        ],
+        "name": "getFundsData",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "address",
+                        "name": "addr",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "since",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "gp",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint16",
+                        "name": "managementFee",
+                        "type": "uint16"
+                    },
+                    {
+                        "internalType": "uint24[]",
+                        "name": "carryBrackets",
+                        "type": "uint24[]"
+                    },
+                    {
+                        "internalType": "uint16[]",
+                        "name": "carryRates",
+                        "type": "uint16[]"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "underlyingToken",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "allowPosition",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "address[]",
+                        "name": "allowedTokens",
+                        "type": "address[]"
+                    },
+                    {
+                        "internalType": "address[]",
+                        "name": "allowedOperators",
+                        "type": "address[]"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "operator",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "uint16",
+                        "name": "activePositionCount",
+                        "type": "uint16"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "opened",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "finalValue",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "finalUnit",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "totalUnit",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "totalManagementFeeAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "paidDaoProfitAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "paidCarriedInterestAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "collectedManagementFeeAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "ethBalance",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "totalValue",
+                        "type": "uint256"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "uint256",
+                                "name": "totalAmount",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "totalUnit",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint24",
+                                "name": "stopLoss",
+                                "type": "uint24"
+                            },
+                            {
+                                "internalType": "uint24",
+                                "name": "buyUnitIndex",
+                                "type": "uint24"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "buyUnitLeft",
+                                "type": "uint256"
+                            },
+                            {
+                                "components": [
+                                    {
+                                        "internalType": "uint256",
+                                        "name": "amount",
+                                        "type": "uint256"
+                                    },
+                                    {
+                                        "internalType": "uint256",
+                                        "name": "unit",
+                                        "type": "uint256"
+                                    },
+                                    {
+                                        "internalType": "uint256",
+                                        "name": "time",
+                                        "type": "uint256"
+                                    }
+                                ],
+                                "internalType": "struct LpBuyAction[]",
+                                "name": "lpBuyActions",
+                                "type": "tuple[]"
+                            },
+                            {
+                                "components": [
+                                    {
+                                        "internalType": "uint256",
+                                        "name": "amount",
+                                        "type": "uint256"
+                                    },
+                                    {
+                                        "internalType": "uint256",
+                                        "name": "unit",
+                                        "type": "uint256"
+                                    },
+                                    {
+                                        "internalType": "uint256",
+                                        "name": "time",
+                                        "type": "uint256"
+                                    },
+                                    {
+                                        "internalType": "uint256",
+                                        "name": "base",
+                                        "type": "uint256"
+                                    },
+                                    {
+                                        "internalType": "uint256",
+                                        "name": "carry",
+                                        "type": "uint256"
+                                    },
+                                    {
+                                        "internalType": "uint256",
+                                        "name": "dao",
+                                        "type": "uint256"
+                                    },
+                                    {
+                                        "internalType": "uint256",
+                                        "name": "fee",
+                                        "type": "uint256"
+                                    }
+                                ],
+                                "internalType": "struct LpSellAction[]",
+                                "name": "lpSellActions",
+                                "type": "tuple[]"
+                            }
+                        ],
+                        "internalType": "struct LpDetail",
+                        "name": "callerDetail",
+                        "type": "tuple"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "gpNomination",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint16",
+                        "name": "lpCount",
+                        "type": "uint16"
+                    },
+                    {
+                        "internalType": "uint16",
+                        "name": "maxLpCount",
+                        "type": "uint16"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "firstBuyMinAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "isPublic",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "address[]",
+                        "name": "allowedLps",
+                        "type": "address[]"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "lockTime",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "uint16",
+                        "name": "lockFee",
+                        "type": "uint16"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "forbidBuy",
+                        "type": "bool"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "address",
+                                "name": "token",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "balance",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "value",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "priority",
+                                "type": "uint256"
+                            }
+                        ],
+                        "internalType": "struct TokenBalance[]",
+                        "name": "tokenBalances",
+                        "type": "tuple[]"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "address",
+                                "name": "lpAddr",
+                                "type": "address"
+                            },
+                            {
+                                "components": [
+                                    {
+                                        "internalType": "uint256",
+                                        "name": "totalAmount",
+                                        "type": "uint256"
+                                    },
+                                    {
+                                        "internalType": "uint256",
+                                        "name": "totalUnit",
+                                        "type": "uint256"
+                                    },
+                                    {
+                                        "internalType": "uint24",
+                                        "name": "stopLoss",
+                                        "type": "uint24"
+                                    },
+                                    {
+                                        "internalType": "uint24",
+                                        "name": "buyUnitIndex",
+                                        "type": "uint24"
+                                    },
+                                    {
+                                        "internalType": "uint256",
+                                        "name": "buyUnitLeft",
+                                        "type": "uint256"
+                                    },
+                                    {
+                                        "components": [
+                                            {
+                                                "internalType": "uint256",
+                                                "name": "amount",
+                                                "type": "uint256"
+                                            },
+                                            {
+                                                "internalType": "uint256",
+                                                "name": "unit",
+                                                "type": "uint256"
+                                            },
+                                            {
+                                                "internalType": "uint256",
+                                                "name": "time",
+                                                "type": "uint256"
+                                            }
+                                        ],
+                                        "internalType": "struct LpBuyAction[]",
+                                        "name": "lpBuyActions",
+                                        "type": "tuple[]"
+                                    },
+                                    {
+                                        "components": [
+                                            {
+                                                "internalType": "uint256",
+                                                "name": "amount",
+                                                "type": "uint256"
+                                            },
+                                            {
+                                                "internalType": "uint256",
+                                                "name": "unit",
+                                                "type": "uint256"
+                                            },
+                                            {
+                                                "internalType": "uint256",
+                                                "name": "time",
+                                                "type": "uint256"
+                                            },
+                                            {
+                                                "internalType": "uint256",
+                                                "name": "base",
+                                                "type": "uint256"
+                                            },
+                                            {
+                                                "internalType": "uint256",
+                                                "name": "carry",
+                                                "type": "uint256"
+                                            },
+                                            {
+                                                "internalType": "uint256",
+                                                "name": "dao",
+                                                "type": "uint256"
+                                            },
+                                            {
+                                                "internalType": "uint256",
+                                                "name": "fee",
+                                                "type": "uint256"
+                                            }
+                                        ],
+                                        "internalType": "struct LpSellAction[]",
+                                        "name": "lpSellActions",
+                                        "type": "tuple[]"
+                                    }
+                                ],
+                                "internalType": "struct LpDetail",
+                                "name": "detail",
+                                "type": "tuple"
+                            }
+                        ],
+                        "internalType": "struct LpDetailInfo[]",
+                        "name": "lpDetailInfos",
+                        "type": "tuple[]"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "uint256",
+                                "name": "tokenId",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "address",
+                                "name": "token0",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "address",
+                                "name": "token1",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "uint24",
+                                "name": "fee",
+                                "type": "uint24"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "amount0",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "amount1",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "fee0",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "fee1",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "amountValue0",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "amountValue1",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "feeValue0",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "feeValue1",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "priority",
+                                "type": "uint256"
+                            }
+                        ],
+                        "internalType": "struct LPToken[]",
+                        "name": "lpTokens",
+                        "type": "tuple[]"
+                    }
+                ],
+                "internalType": "struct FundAccountData[]",
+                "name": "dataList",
+                "type": "tuple[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    }
+]
