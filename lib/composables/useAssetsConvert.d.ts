@@ -2,8 +2,8 @@ import { Overrides, Signer } from 'ethers';
 export type ConvertParams = {
     ratio: number;
     slippage: number;
-    TokenIn: string;
-    TokenOut: string;
+    tokenIn: string;
+    tokenOut: string;
     useNative: boolean;
     expiration?: number;
 };

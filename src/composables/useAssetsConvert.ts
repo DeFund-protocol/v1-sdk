@@ -15,8 +15,8 @@ import { SendTransaction } from './useWeb3';
 export type ConvertParams = {
   ratio: number;
   slippage: number;
-  TokenIn: string;
-  TokenOut: string;
+  tokenIn: string;
+  tokenOut: string;
   useNative: boolean;
   expiration?: number;
 };
@@ -63,14 +63,31 @@ export class FundAssetConvert {
     overrides?: Overrides,
     refundGas = false
   ) {
+    const lpAddress = maker || constants.AddressZero;
+    const fundData = await useContract(
+      this.fundViewerAddress,
+      FundViewerABI,
+      this.signer
+    ).getFundData(fundAddress, lpAddress, true);
+    const tokenIn = fundData.tokenBalances.find((item: any) =>
+      isEqualAddress(item.token, params.tokenIn)
+    );
+    if (!tokenIn) throw new Error('Invalid tokenIn');
+
+    const amountIn = tokenIn.balance
+      .mul(BigNumber.from(params.ratio))
+      .div(BigNumber.from(1e4));
+
     const swapParams: SwapParams = {
       opType: 'exactInput',
-      tokenIn: params.TokenIn,
-      tokenOut: params.TokenOut,
+      tokenIn: params.tokenIn,
+      tokenOut: params.tokenOut,
+      amountIn: amountIn,
       slippage: params.slippage,
       useNative: params.useNative,
       expiration: params.expiration
     };
+
     return await new UniswapSwap(this.chainId, this.signer).executeSwap(
       maker,
       fundAddress,
