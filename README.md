@@ -30,29 +30,29 @@ const sdk = new UnversalSDK(chainId, signer);
 ### Swap
 
 #### Swap Params
-| Param       | Type       | Description         |
-| ----------- | ---------- | ------------------- |
-| maker       | Address    | your signer address |
-| fundAddress | Address    | your fund address   |
-| swapDetails  | SwapDetails |                     |
-| overrides   | Overrides  |                     |
+| Param       | Type        | Description         |
+| ----------- | ----------- | ------------------- |
+| maker       | Address     | your signer address |
+| fundAddress | Address     | your fund address   |
+| swapDetails | SwapDetails |                     |
+| overrides   | Overrides   |                     |
 
 #### Swap Details
-|Param|Type|Description|
-|----|----|----|
-|opType|string|`exactInput`, `exactOutput`|
-|tokenIn|Address||
-|tokenOut|Address||
-|amountIn|BigNumber|amountIn for exactInput, amountInMaximum for exactOutput|
-|amountOut|Bignumber|amountOutMinimum for exactInput, amountOut for exactOutput|
-|useNative|Boolean|if one of tokenIn or tokenOut is Weth and need use ETH balance, set true, else false|
-|expiration|number||
+| Param      | Type      | Description                                                                          |
+| ---------- | --------- | ------------------------------------------------------------------------------------ |
+| opType     | string    | `exactInput`, `exactOutput`                                                          |
+| tokenIn    | Address   |                                                                                      |
+| tokenOut   | Address   |                                                                                      |
+| amountIn   | BigNumber | amountIn for exactInput, amountInMaximum for exactOutput                             |
+| amountOut  | Bignumber | amountOutMinimum for exactInput, amountOut for exactOutput                           |
+| useNative  | Boolean   | if one of tokenIn or tokenOut is Weth and need use ETH balance, set true, else false |
+| expiration | number    |                                                                                      |
 
 #### Overrides
-|Param|Type|Description|
-|----|----|----|
-|GasPrice|number|max gas price in gwei|
-|GasLimit|number||
+| Param    | Type   | Description           |
+| -------- | ------ | --------------------- |
+| GasPrice | number | max gas price in gwei |
+| GasLimit | number |                       |
 
 ```typescript
 const maker = signer.address;
@@ -70,6 +70,38 @@ const swapDetails = {
 const overrides = {};
 
 const tx =await sdk.executeSwap(maker, fundAddress, swapDetails, overrides);
+```
+
+### AssetsConvert
+
+#### Convert Params
+| Param          | Type           | Description         |
+| -------------- | -------------- | ------------------- |
+| maker          | Address        | your signer address |
+| fundAddress    | Address        | your fund address   |
+| convertDetails | ConvertDetails |                     |
+| overrides      | Overrides      |                     |
+
+#### Convert Details
+| Param    | Type    | Description      |
+| -------- | ------- | ---------------- |
+| ratio    | number  | ratio of tokenIn |
+| tokenIn  | Address |                  |
+| tokenOut | Address |                  |
+
+```typescript
+const maker = signer.address;
+const fundAddress = 'your fund address';
+const convertDetails = {
+    "opType": "assetsConvert",
+    "tokenIn": "",
+    "tokenOut": "",
+    "ratio": 1000,
+}
+
+const overrides = {};
+
+const tx =await sdk.executeAssetsConvert(maker, fundAddress, convertDetails, overrides);
 ```
 
 ### Examples
