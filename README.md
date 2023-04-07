@@ -38,15 +38,15 @@ const sdk = new UniversalSDK(chainId, signer);
 | overrides   | Overrides   |                     |
 
 #### Swap Details
-|Param|Type|Description|
-|----|----|----|
-|opType|string|`exactInput`, `exactOutput`|
-|tokenIn|Address||
-|tokenOut|Address||
-|amountIn|BigNumber|amountIn for exactInput, amountInMaximum for exactOutput|
-|amountOut|BigNumber|amountOutMinimum for exactInput, amountOut for exactOutput|
-|useNative|Boolean|set to true if you want to swap to or from ETH instead of WETH|
-|expiration|number||
+| Param      | Type      | Description                                                    |
+| ---------- | --------- | -------------------------------------------------------------- |
+| opType     | string    | `exactInput`, `exactOutput`                                    |
+| tokenIn    | Address   |                                                                |
+| tokenOut   | Address   |                                                                |
+| amountIn   | BigNumber | amountIn for exactInput, amountInMaximum for exactOutput       |
+| amountOut  | BigNumber | amountOutMinimum for exactInput, amountOut for exactOutput     |
+| useNative  | Boolean   | set to true if you want to swap to or from ETH instead of WETH |
+| expiration | number    |                                                                |
 
 #### Overrides
 You can find out more about the overrides parameter from the [ethers document](https://docs.ethers.org/v5/api/contract/contract/#Contract--write)
@@ -61,7 +61,7 @@ const swapDetails = {
     "amountIn": BigNumber.from('100000000000000000'), // 0.1 ETH
     "amountOut": BigNumber.from('1000000'), // 1 USDC
     "useNative": true, // use ETH
-    "expiration": Math.round(new Date() /1000 + 10 * 60), // expires in 10 minutes
+    "expiration": Math.round(new Date().getTime() / 1000 + 10 * 60), // expires in 10 minutes
 }
 
 const overrides = {};
