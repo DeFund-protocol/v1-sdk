@@ -1,4 +1,4 @@
-import { Overrides, Signer } from "ethers";
+import { Overrides, Signer } from 'ethers';
 export type ConvertParams = {
     ratio: number;
     toToken: string;
@@ -10,6 +10,6 @@ export declare class FundAssetConvert {
     readonly fundManagerAddress: string;
     readonly fundViewerAddress: string;
     constructor(chainId: number, signer: Signer);
-    executeAssetsConvert(maker: string, fundAddress: string, params: ConvertParams, overrides?: Overrides): Promise<any>;
+    executeAssetsConvert(maker: string, fundAddress: string, params: ConvertParams, overrides?: Overrides, refundGas?: boolean): Promise<any>;
     getConvertParams(fundAddress: string, params: any): Promise<any>;
 }

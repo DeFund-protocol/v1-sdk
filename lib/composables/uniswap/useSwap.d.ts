@@ -15,10 +15,10 @@ export declare class UniswapSwap {
     readonly swapRouterAddress: string;
     readonly fundManagerAddress: string;
     constructor(chainId: number, signer: Signer);
-    executeSwap(maker: string, fundAddress: string, params: SwapParams, overrides?: Overrides): Promise<any>;
+    executeSwap(maker: string, fundAddress: string, params: SwapParams, overrides?: Overrides, refundGas?: boolean): Promise<any>;
     exactInputCalldata(params: SwapParams, recipient: string): Promise<string>;
     exactOutPutCalldata(params: SwapParams, recipient: string): Promise<string>;
-    approveToken(maker: string, fundAddress: string, params: any, overrides?: Overrides): Promise<any>;
+    approveToken(maker: string, fundAddress: string, params: any, overrides?: Overrides, refundGas?: boolean): Promise<any>;
     approveTokenCalldata(): string;
     calcEthAmount(params: SwapParams): BigNumber;
     calcRecipient(params: SwapParams, recipient: string): string;

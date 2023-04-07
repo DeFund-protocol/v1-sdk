@@ -1,6 +1,6 @@
 import { Overrides, Signer } from 'ethers';
 import { SwapParams } from './composables';
-export declare class UnversalSDK {
+export declare class UniversalSDK {
     readonly chainId: number;
     readonly signer: Signer;
     constructor(chainId: number, signer: Signer);
