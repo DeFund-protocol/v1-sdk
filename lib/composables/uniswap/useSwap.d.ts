@@ -3,10 +3,11 @@ export type SwapParams = {
     opType: string;
     tokenIn: string;
     tokenOut: string;
-    amountIn: BigNumber;
-    amountOut: BigNumber;
+    amountIn?: BigNumber;
+    amountOut?: BigNumber;
+    slippage: number;
     useNative: boolean;
-    expiration: number;
+    expiration?: number;
 };
 export declare class UniswapSwap {
     readonly chainId: number;
@@ -20,7 +21,10 @@ export declare class UniswapSwap {
     exactOutPutCalldata(params: SwapParams, recipient: string): Promise<string>;
     approveToken(maker: string, fundAddress: string, params: any, overrides?: Overrides, refundGas?: boolean): Promise<any>;
     approveTokenCalldata(): string;
-    calcEthAmount(params: SwapParams): BigNumber;
+    swapExpiration(params: SwapParams): void;
+    calcEthAmount(params: SwapParams): BigNumber | undefined;
     calcRecipient(params: SwapParams, recipient: string): string;
+    calcAmountInMaximum(expectedAmount: BigNumber, slippage: number): BigNumber;
+    calcAmountOutMinimum(expectedAmount: BigNumber, slippage: number): BigNumber;
     encodeCalldata(abi: any, method: string, params: any): string;
 }

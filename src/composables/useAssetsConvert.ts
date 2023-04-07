@@ -7,13 +7,18 @@ import {
 } from '../constants';
 import { WethAddress } from '../constants/token';
 import { exactInputPath, fallbackPath } from './uniswap/usePathFinder';
+import { SwapParams, UniswapSwap } from './uniswap/useSwap';
 import { useContract } from './useContract';
 import { isEqualAddress } from './useUtils';
 import { SendTransaction } from './useWeb3';
 
 export type ConvertParams = {
   ratio: number;
-  toToken: string;
+  slippage: number;
+  TokenIn: string;
+  TokenOut: string;
+  useNative: boolean;
+  expiration?: number;
 };
 
 export class FundAssetConvert {
@@ -48,6 +53,30 @@ export class FundAssetConvert {
       executeParams,
       overrides,
       this.signer
+    );
+  }
+
+  async executeAssetsConvertWithSlislippage(
+    maker: string,
+    fundAddress: string,
+    params: ConvertParams,
+    overrides?: Overrides,
+    refundGas = false
+  ) {
+    const swapParams: SwapParams = {
+      opType: 'exactInput',
+      tokenIn: params.TokenIn,
+      tokenOut: params.TokenOut,
+      slippage: params.slippage,
+      useNative: params.useNative,
+      expiration: params.expiration
+    };
+    return await new UniswapSwap(this.chainId, this.signer).executeSwap(
+      maker,
+      fundAddress,
+      swapParams,
+      overrides,
+      refundGas
     );
   }
 

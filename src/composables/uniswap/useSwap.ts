@@ -16,10 +16,11 @@ export type SwapParams = {
   opType: string;
   tokenIn: string;
   tokenOut: string;
-  amountIn: BigNumber;
-  amountOut: BigNumber;
+  amountIn?: BigNumber;
+  amountOut?: BigNumber;
+  slippage: number;
   useNative: boolean;
-  expiration: number;
+  expiration?: number;
 };
 
 export class UniswapSwap {
@@ -81,7 +82,9 @@ export class UniswapSwap {
   }
 
   async exactInputCalldata(params: SwapParams, recipient: string) {
-    const path = await exactInputPath(
+    if (!params.amountIn) throw new Error('Invalid amountIn');
+
+    const trade = await exactInputPath(
       params.tokenIn,
       params.tokenOut,
       params.amountIn,
@@ -91,9 +94,12 @@ export class UniswapSwap {
 
     const swapParams = {
       recipient: this.calcRecipient(params, recipient),
-      path: path.path,
+      path: trade.path,
       amountIn: params.amountIn,
-      amountOutMinimum: params.amountOut
+      amountOutMinimum: this.calcAmountOutMinimum(
+        trade.expectedAmount,
+        params.slippage
+      )
     };
 
     const calldata = this.encodeCalldata(SwapRouter02ABI, 'exactInput', [
@@ -109,13 +115,15 @@ export class UniswapSwap {
     );
 
     return this.encodeCalldata(SwapRouter02ABI, 'multicall(uint256,bytes[])', [
-      params.expiration,
+      this.swapExpiration(params),
       [calldata, unwrap]
     ]);
   }
 
   async exactOutPutCalldata(params: SwapParams, recipient: string) {
-    const path = await exactOutputPath(
+    if (!params.amountOut) throw new Error('Invalid amountOut');
+
+    const trade = await exactOutputPath(
       params.tokenIn,
       params.tokenOut,
       params.amountOut,
@@ -125,9 +133,12 @@ export class UniswapSwap {
 
     const swapParams = {
       recipient: this.calcRecipient(params, recipient),
-      path: path.path,
+      path: trade.path,
       amountOut: params.amountOut,
-      amountInMaximum: params.amountIn
+      amountInMaximum: this.calcAmountInMaximum(
+        trade.expectedAmount,
+        params.slippage
+      )
     };
 
     const output = this.encodeCalldata(SwapRouter02ABI, 'exactOutput', [
@@ -142,7 +153,7 @@ export class UniswapSwap {
         return this.encodeCalldata(
           SwapRouter02ABI,
           'multicall(uint256,bytes[])',
-          [params.expiration, [output, refund]]
+          [this.swapExpiration(params), [output, refund]]
         );
       case isEqualAddress(params.tokenOut, this.wethAddress):
         const unwrap = this.encodeCalldata(
@@ -154,7 +165,7 @@ export class UniswapSwap {
         return this.encodeCalldata(
           SwapRouter02ABI,
           'multicall(uint256,bytes[])',
-          [params.expiration, [output, unwrap]]
+          [this.swapExpiration(params), [output, unwrap]]
         );
       default:
         return output;
@@ -205,6 +216,10 @@ export class UniswapSwap {
     ]);
   }
 
+  swapExpiration(params: SwapParams) {
+    params?.expiration || Math.round(new Date().getTime() / 1000 + 10 * 60);
+  }
+
   calcEthAmount(params: SwapParams) {
     if (!params.useNative) return constants.Zero;
     if (!isEqualAddress(params.tokenIn, this.wethAddress))
@@ -217,6 +232,18 @@ export class UniswapSwap {
     if (!isEqualAddress(params.tokenOut, this.wethAddress)) return recipient;
 
     return NativeETHAddress;
+  }
+
+  calcAmountInMaximum(expectedAmount: BigNumber, slippage: number) {
+    return expectedAmount
+      .mul(BigNumber.from(1e4).add(BigNumber.from(slippage * 100)))
+      .div(BigNumber.from(1e4));
+  }
+
+  calcAmountOutMinimum(expectedAmount: BigNumber, slippage: number) {
+    return expectedAmount
+      .mul(BigNumber.from(1e4))
+      .div(BigNumber.from(1e4).add(BigNumber.from(slippage * 100)));
   }
 
   encodeCalldata(abi: any, method: string, params: any) {

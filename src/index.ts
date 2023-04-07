@@ -1,6 +1,9 @@
 import { Overrides, Signer } from 'ethers';
 import { SwapParams, UniswapSwap } from './composables';
-import { FundAssetConvert } from './composables/useAssetsConvert';
+import {
+  ConvertParams,
+  FundAssetConvert
+} from './composables/useAssetsConvert';
 
 export class UniversalSDK {
   readonly chainId: number;
@@ -30,12 +33,24 @@ export class UniversalSDK {
   async executeAssetsConvert(
     maker: string,
     fundAddress: string,
-    params: any,
+    params: ConvertParams,
     overrides?: Overrides
   ) {
-    return await new FundAssetConvert(
-      this.chainId,
-      this.signer
-    ).executeAssetsConvert(maker, fundAddress, params, overrides);
+    if (params.slippage) {
+      return await new FundAssetConvert(
+        this.chainId,
+        this.signer
+      ).executeAssetsConvertWithSlislippage(
+        maker,
+        fundAddress,
+        params,
+        overrides
+      );
+    } else {
+      return await new FundAssetConvert(
+        this.chainId,
+        this.signer
+      ).executeAssetsConvert(maker, fundAddress, params, overrides);
+    }
   }
 }
