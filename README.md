@@ -3,7 +3,7 @@
 
 ## Installation
 ```shell
-npm install DeFund-protocol/v1-sdk
+npm install @defund-protocol/v1-sdk
 ```
 
 ## How to use
