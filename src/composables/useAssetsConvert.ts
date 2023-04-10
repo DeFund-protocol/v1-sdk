@@ -56,7 +56,7 @@ export class FundAssetConvert {
     );
   }
 
-  async executeAssetsConvertWithSlislippage(
+  async executeAssetsConvertWithSlippage(
     maker: string,
     fundAddress: string,
     params: ConvertParams,

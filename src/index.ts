@@ -40,7 +40,7 @@ export class UniversalSDK {
       return await new FundAssetConvert(
         this.chainId,
         this.signer
-      ).executeAssetsConvertWithSlislippage(
+      ).executeAssetsConvertWithSlippage(
         maker,
         fundAddress,
         params,

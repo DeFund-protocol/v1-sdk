@@ -15,6 +15,6 @@ export declare class FundAssetConvert {
     readonly fundViewerAddress: string;
     constructor(chainId: number, signer: Signer);
     executeAssetsConvert(maker: string, fundAddress: string, params: ConvertParams, overrides?: Overrides, refundGas?: boolean): Promise<any>;
-    executeAssetsConvertWithSlislippage(maker: string, fundAddress: string, params: ConvertParams, overrides?: Overrides, refundGas?: boolean): Promise<any>;
+    executeAssetsConvertWithSlippage(maker: string, fundAddress: string, params: ConvertParams, overrides?: Overrides, refundGas?: boolean): Promise<any>;
     getConvertParams(fundAddress: string, params: any): Promise<any>;
 }
