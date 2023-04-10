@@ -14,7 +14,7 @@
   "author": "Rex<rex.s.bit@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "@defund-protocol/token-list": "github:DeFund-protocol/token-list",
+    "@defund-protocol/token-list": "^1.2.0",
     "@uniswap/v3-sdk": "^3.9.0"
   },
   "devDependencies": {

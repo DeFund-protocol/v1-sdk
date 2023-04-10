@@ -1,7 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
-  '@defund-protocol/token-list': github:DeFund-protocol/token-list
+  '@defund-protocol/token-list': ^1.2.0
   '@ethersproject/abstract-provider': ^5.7.0
   '@uniswap/v3-sdk': ^3.9.0
   ethers: ^5.7.2
@@ -9,7 +9,7 @@ specifiers:
   typescript: ^5.0.3
 
 dependencies:
-  '@defund-protocol/token-list': github.com/DeFund-protocol/token-list/cbd6805ce1839a31bde41070860366618762cc03
+  '@defund-protocol/token-list': 1.2.0
   '@uniswap/v3-sdk': 3.9.0_hardhat@2.13.0
 
 devDependencies:
@@ -19,6 +19,10 @@ devDependencies:
   typescript: 5.0.3
 
 packages:
+
+  /@defund-protocol/token-list/1.2.0:
+    resolution: {integrity: sha512-l2df2pVsMAsNnijjeoA07Nqeo2LRuNI1hAsnhKPq0HM4XP5nVGvjTcp8nZwiRm01Zn9ZBx0BPycWa55RRBFWgA==}
+    dev: false
 
   /@ethersproject/abi/5.7.0:
     resolution: {integrity: sha512-351ktp42TiRcYB3H1OP8yajPeAQstMW/yCFokj/AthP9bLHzQFPlOrxOcwYEDkUAICmOHljvN4K39OMTMUa9RA==}
@@ -2490,10 +2494,4 @@ packages:
   /yocto-queue/0.1.0:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
-    dev: false
-
-  github.com/DeFund-protocol/token-list/cbd6805ce1839a31bde41070860366618762cc03:
-    resolution: {tarball: https://codeload.github.com/DeFund-protocol/token-list/tar.gz/cbd6805ce1839a31bde41070860366618762cc03}
-    name: '@defund-protocol/token-list'
-    version: 1.1.0
     dev: false
