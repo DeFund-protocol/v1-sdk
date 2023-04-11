@@ -14,7 +14,7 @@ SDK initialization requires the following parameters
 
 | Param   | type   | description                 |
 | ------- | ------ | --------------------------- |
-| chainId | number | 1 for mainnet, 5 for goerli |
+| chainId | number | 1 for mainnet, 5 for goerli, 137 for matic, 80001 for mumbai |
 | signer  | Signer |                             |
 
 ```typescript

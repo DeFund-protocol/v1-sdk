@@ -7,7 +7,9 @@ import { default as Weth9ABI } from '../abis/Weth9.json';
 export { FundManagerABI, FundViewerABI, SwapRouter02ABI, PathFinderABI, Weth9ABI, ERC20ABI };
 export declare enum SupportedChainId {
     MAINNET = 1,
-    GOERLI = 5
+    GOERLI = 5,
+    MATIC = 137,
+    MUMBAI = 80001
 }
 export type AddressMap = {
     [ChainId: number]: string;
