@@ -10,7 +10,13 @@
     "build": "tsc",
     "format": "prettier --config .prettierrc 'src/**/*.ts' --write"
   },
-  "keywords": [],
+  "keywords": ["DeFund", "DeFund protocol", "defund", "DeFi", "Ethereum", "fund", "web3", "ethers"],
+  "homepage": "https://defund.io",
+  "bugs": "https://github.com/DeFund-protocol/v1-sdk/issues",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DeFund-protocol/v1-sdk.git"
+  },
   "author": "Rex<rex.s.bit@gmail.com>",
   "license": "MIT",
   "dependencies": {
