@@ -1,4 +1,4 @@
-import { Signer } from "ethers";
+import { Signer } from 'ethers';
 export declare class Fund {
     readonly chainId: number;
     readonly signer: Signer;

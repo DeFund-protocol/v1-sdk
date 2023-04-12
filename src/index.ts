@@ -51,10 +51,14 @@ export class UniversalSDK {
   }
 
   async getFundInfo(fundAddress: string, lpAddress?: string, withLP = true) {
-    return await new Fund(this.chainId, this.signer).getFunndInfo(fundAddress,withLP, lpAddress)
+    return await new Fund(this.chainId, this.signer).getFunndInfo(
+      fundAddress,
+      withLP,
+      lpAddress
+    );
   }
 
   async getFundAssets(fundAddress: string) {
-    return await new Fund(this.chainId, this.signer).getFundAssets(fundAddress)
+    return await new Fund(this.chainId, this.signer).getFundAssets(fundAddress);
   }
 }
