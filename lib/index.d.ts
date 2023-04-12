@@ -7,4 +7,9 @@ export declare class UniversalSDK {
     constructor(chainId: number, signer: Signer);
     executeSwap(maker: string, fundAddress: string, params: SwapParams, overrides?: Overrides): Promise<any>;
     executeAssetsConvert(maker: string, fundAddress: string, params: ConvertParams, overrides?: Overrides): Promise<any>;
+    getFundInfo(fundAddress: string, lpAddress?: string, withLP?: boolean): Promise<any>;
+    getFundAssets(fundAddress: string): Promise<{
+        tokenBalances: any;
+        lpTokens: any;
+    }>;
 }

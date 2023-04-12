@@ -4,6 +4,7 @@ import {
   ConvertParams,
   FundAssetConvert
 } from './composables/useAssetsConvert';
+import { Fund } from './composables/useFund';
 
 export class UniversalSDK {
   readonly chainId: number;
@@ -47,5 +48,13 @@ export class UniversalSDK {
         this.signer
       ).executeAssetsConvert(maker, fundAddress, params, overrides);
     }
+  }
+
+  async getFundInfo(fundAddress: string, lpAddress?: string, withLP = true) {
+    return await new Fund(this.chainId, this.signer).getFunndInfo(fundAddress,withLP, lpAddress)
+  }
+
+  async getFundAssets(fundAddress: string) {
+    return await new Fund(this.chainId, this.signer).getFundAssets(fundAddress)
   }
 }
