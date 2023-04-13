@@ -37,47 +37,59 @@ import {
   ApproveParams,
   approveTokenMulticallCalldata
 } from './useApproveToken';
-import { swapMulticallCalldata } from './useSwap';
+import { SwapParams, swapMulticallCalldata } from './useSwap';
 
-export interface LpParams {
+export type baseLiquidityParams = {
   opType: string;
   tokenA: string;
   tokenB: string;
   fee: number;
-  amountA?: BigNumber;
-  amountB?: BigNumber;
-  useNative?: boolean;
-  lowerPrice?: string;
-  upperPrice?: string;
-  lowerTick?: string;
-  upperTick?: string;
-  tokenId?: number;
-  percent?: number;
   expiration?: number;
-}
-
-const getPoolAddress = (
-  chainId: number,
-  token0: any,
-  token1: any,
-  fee: number
-) => {
-  const tokenA = new Token(chainId, token0.address, token0.decimals);
-  const tokenB = new Token(chainId, token1.address, token1.decimals);
-  return computePoolAddress({
-    factoryAddress: FACTORY_ADDRESS,
-    tokenA,
-    tokenB,
-    fee
-  });
 };
+
+export type addLiquidityParams = baseLiquidityParams & {
+  amountA: BigNumber;
+  amountB: BigNumber;
+  slippage: number;
+  useNative: boolean;
+  lowerPrice?: number;
+  upperPrice?: number;
+  lowerTick?: number;
+  upperTick?: number;
+  tokenId?: number;
+  expiration?: number;
+};
+
+export type removeLiquidityParams = baseLiquidityParams & {
+  tokenId: number;
+  percent?: number;
+  useNative: boolean;
+};
+
+export type collectFeeParams = baseLiquidityParams & {
+  tokenId: number;
+};
+
+export type rebalanceParams = {
+  opType: string;
+  removeData: removeLiquidityParams;
+  swapData?: SwapParams;
+  addData: addLiquidityParams;
+  expiration?: number;
+};
+
+export type LpParams =
+  | addLiquidityParams
+  | removeLiquidityParams
+  | collectFeeParams
+  | rebalanceParams;
 
 const addLiquidity = async (
   chainId: number,
   signer: Signer,
   maker: string,
   fundAddress: string,
-  params: LpParams,
+  params: addLiquidityParams,
   refundGas?: boolean,
   overrides?: Overrides
 ) => {
@@ -99,7 +111,7 @@ const addLiquidity = async (
 const addLiquidityCalldata = async (
   chainId: number,
   signer: Signer,
-  params: any,
+  params: addLiquidityParams,
   fundAddress: string
 ) => {
   const token0 = useToken(chainId, params.tokenA);
@@ -122,7 +134,7 @@ const addLiquidityCalldata = async (
   const currentLiquidity = await poolContract.liquidity();
 
   let tickLower = params.lowerTick;
-  if (!tickLower) {
+  if (!tickLower && params.lowerPrice) {
     const lowerPriceInFraction = fraction(params.lowerPrice);
     tickLower = nearestUsableTick(
       priceToClosestTick(
@@ -144,7 +156,7 @@ const addLiquidityCalldata = async (
   }
 
   let tickUpper = params.upperTick;
-  if (!tickUpper) {
+  if (!tickUpper && params.upperPrice) {
     const upperPriceInFraction = fraction(params.upperPrice);
     tickUpper = nearestUsableTick(
       priceToClosestTick(
@@ -165,6 +177,8 @@ const addLiquidityCalldata = async (
     );
   }
 
+  if (!(tickLower && tickUpper)) throw new Error('Invalid ticker or price');
+
   const currentSqrtRatioX96 = TickMath.getSqrtRatioAtTick(currentTick);
   const pool = new Pool(
     tokenA,
@@ -184,23 +198,28 @@ const addLiquidityCalldata = async (
     useFullPrecision: true
   });
 
-  const addLiquidityOptions: AddLiquidityOptions = {
-    tokenId: params.tokenId,
-    slippageTolerance: new Percent(1, 100),
-    deadline: params.expiration
-  };
-
-  if (params.useNative) {
-    addLiquidityOptions.useNative = Ether.onChain(chainId);
+  let options: AddLiquidityOptions;
+  if (params.tokenId) {
+    options = {
+      tokenId: params.tokenId,
+      slippageTolerance: new Percent(1, 100),
+      deadline: params.expiration || new Date().getTime() / 1000 + 10 * 60
+    };
+  } else {
+    options = {
+      recipient: fundAddress,
+      slippageTolerance: new Percent(1, 100),
+      deadline: params.expiration || new Date().getTime() / 1000 + 10 * 60
+    };
   }
 
-  // if (!params.tokenId) {
-  //   addLiquidityOptions.recipient = fundAddress;
-  // }
+  if (params.useNative) {
+    options.useNative = Ether.onChain(chainId);
+  }
 
   const { calldata } = NonfungiblePositionManager.addCallParameters(
     positionToMint,
-    addLiquidityOptions
+    options
   );
 
   return calldata;
@@ -211,7 +230,7 @@ const addLiquidityMulticallDatacall = async (
   signer: Signer,
   maker: string,
   fundAddress: string,
-  params: LpParams,
+  params: addLiquidityParams,
   refundGas?: boolean
 ) => {
   const wethAddress = WethAddress[chainId];
@@ -275,7 +294,7 @@ const removeLiquidity = async (
   signer: Signer,
   maker: string,
   fundAddress: string,
-  params: LpParams,
+  params: removeLiquidityParams,
   refundGas?: boolean,
   overrides?: Overrides
 ) => {
@@ -408,7 +427,7 @@ const collectFee = async (
   signer: Signer,
   maker: string,
   fundAddress: string,
-  params: LpParams,
+  params: collectFeeParams,
   refundGas?: boolean,
   overrides?: Overrides
 ) => {
@@ -428,7 +447,7 @@ const collectFee = async (
 
 const collectFeeCalldata = async (
   chainId: number,
-  params: any,
+  params: collectFeeParams,
   fundAddress: string
 ) => {
   const token0 = useToken(chainId, params.tokenA);
@@ -470,7 +489,7 @@ const rebalance = async (
   signer: Signer,
   maker: string,
   fundAddress: string,
-  params: any,
+  params: rebalanceParams,
   refundGas?: boolean,
   overrides?: Overrides
 ) => {
@@ -494,7 +513,7 @@ const addLiquidityCalldataSingle = async (
   signer: Signer,
   maker: string,
   fundAddress: string,
-  params: LpParams,
+  params: addLiquidityParams,
   refundGas?: boolean
 ) => {
   const wethAddress = WethAddress[chainId];
@@ -565,7 +584,7 @@ const rebalanceCalldata = async (
   return calldatas;
 };
 
-const calcEthAmount = (params: LpParams, wethAddress: string) => {
+const calcEthAmount = (params: addLiquidityParams, wethAddress: string) => {
   if (!params.useNative) return constants.Zero;
   if (isEqualAddress(params.tokenA, wethAddress)) return params.amountA;
   if (isEqualAddress(params.tokenB, wethAddress)) return params.amountB;
@@ -589,7 +608,7 @@ const executeLP = async (
         signer,
         maker,
         recipient,
-        params,
+        params as addLiquidityParams,
         refundGas,
         overrides
       );
@@ -599,7 +618,7 @@ const executeLP = async (
         signer,
         maker,
         recipient,
-        params,
+        params as removeLiquidityParams,
         refundGas,
         overrides
       );
@@ -609,7 +628,7 @@ const executeLP = async (
         signer,
         maker,
         recipient,
-        params,
+        params as collectFeeParams,
         refundGas,
         overrides
       );
@@ -619,11 +638,31 @@ const executeLP = async (
         signer,
         maker,
         recipient,
-        params,
+        params as rebalanceParams,
         refundGas,
         overrides
       );
   }
+};
+
+/*
+ * helper methods
+ */
+const getPoolAddress = (
+  chainId: number,
+  token0: any,
+  token1: any,
+  fee: number
+) => {
+  const tokenA = new Token(chainId, token0.address, token0.decimals);
+  const tokenB = new Token(chainId, token1.address, token1.decimals);
+
+  return computePoolAddress({
+    factoryAddress: FACTORY_ADDRESS,
+    tokenA,
+    tokenB,
+    fee
+  });
 };
 
 export { executeLP };

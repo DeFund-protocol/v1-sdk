@@ -5,8 +5,62 @@ import { default as PathFinderABI } from '../abis/PathFinder.json';
 import { default as SwapRouter02ABI } from '../abis/uniswap/SwapRouter02.json';
 import { default as NonfungiblePositionManagerABI } from '../abis/uniswap/NonfungiblePositionManager.json';
 import { default as Weth9ABI } from '../abis/Weth9.json';
-import { abi as IUniswapV3FactoryABI } from '@uniswap/v3-core/artifacts/contracts/interfaces/IUniswapV3Factory.sol/IUniswapV3Factory.json';
-import { abi as IUniswapV3PoolABI } from '@uniswap/v3-core/artifacts/contracts/interfaces/IUniswapV3Pool.sol/IUniswapV3Pool.json';
+declare const IUniswapV3FactoryABI: ({
+    anonymous: boolean;
+    inputs: {
+        indexed: boolean;
+        internalType: string;
+        name: string;
+        type: string;
+    }[];
+    name: string;
+    type: string;
+    outputs?: undefined;
+    stateMutability?: undefined;
+} | {
+    inputs: {
+        internalType: string;
+        name: string;
+        type: string;
+    }[];
+    name: string;
+    outputs: {
+        internalType: string;
+        name: string;
+        type: string;
+    }[];
+    stateMutability: string;
+    type: string;
+    anonymous?: undefined;
+})[];
+declare const IUniswapV3PoolABI: ({
+    anonymous: boolean;
+    inputs: {
+        indexed: boolean;
+        internalType: string;
+        name: string;
+        type: string;
+    }[];
+    name: string;
+    type: string;
+    outputs?: undefined;
+    stateMutability?: undefined;
+} | {
+    inputs: {
+        internalType: string;
+        name: string;
+        type: string;
+    }[];
+    name: string;
+    outputs: {
+        internalType: string;
+        name: string;
+        type: string;
+    }[];
+    stateMutability: string;
+    type: string;
+    anonymous?: undefined;
+})[];
 export { FundManagerABI, FundViewerABI, PathFinderABI, SwapRouter02ABI, NonfungiblePositionManagerABI, IUniswapV3FactoryABI, IUniswapV3PoolABI, ERC20ABI, Weth9ABI };
 export declare enum SupportedChainId {
     MAINNET = 1,
