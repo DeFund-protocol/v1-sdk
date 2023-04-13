@@ -524,9 +524,11 @@ const addLiquidityCalldataSingle = async (
     fundAddress
   );
   const ethAmount = calcEthAmount(params, wethAddress);
+  const nonfungiblePositionManagerAddress =
+  NonfungiblePositionManagerAddress[chainId];
 
-  return await new Fund(chainId, signer, fundAddress).executeOrderCallData(
-    fundAddress,
+  return new Fund(chainId, signer, fundAddress).executeOrderCallData(
+    nonfungiblePositionManagerAddress,
     calldata,
     ethAmount,
     maker,
