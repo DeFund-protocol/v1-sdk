@@ -1,7 +1,7 @@
 import { Signer } from 'ethers';
 import { useContract } from './useContract';
 
-const SendTransaction = async (
+const sendTransaction = async (
   contractAddress: string,
   contractABI: any,
   functionFragment: string,
@@ -26,4 +26,8 @@ const SendTransaction = async (
   }
 };
 
-export { SendTransaction };
+const getAddressFromSigner = async (signer: Signer): Promise<string> => {
+  return await signer.getAddress();
+};
+
+export { sendTransaction, getAddressFromSigner };

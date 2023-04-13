@@ -1,9 +1,7 @@
 import { Overrides, Signer } from 'ethers';
-import { SwapParams, UniswapSwap } from './composables';
-import {
-  ConvertParams,
-  FundAssetConvert
-} from './composables/useAssetsConvert';
+import { SwapParams } from './composables';
+import { LpParams } from './composables/uniswap/useLiquidityPool';
+import { ConvertParams } from './composables/uniswap/useAssetsConvert';
 import { Fund } from './composables/useFund';
 
 export class UniversalSDK {
@@ -21,12 +19,30 @@ export class UniversalSDK {
     maker: string,
     fundAddress: string,
     params: SwapParams,
+    refundGas?: boolean,
     overrides?: Overrides
   ) {
-    return await new UniswapSwap(this.chainId, this.signer).executeSwap(
+    return await this.fund(fundAddress).executeSwap(
       maker,
       fundAddress,
       params,
+      refundGas,
+      overrides
+    );
+  }
+
+  async executeLP(
+    maker: string,
+    fundAddress: string,
+    params: LpParams,
+    refundGas?: boolean,
+    overrides?: Overrides
+  ) {
+    return await this.fund(fundAddress).executeLP(
+      maker,
+      fundAddress,
+      params,
+      refundGas,
       overrides
     );
   }
@@ -35,30 +51,31 @@ export class UniversalSDK {
     maker: string,
     fundAddress: string,
     params: ConvertParams,
+    refundGas?: boolean,
     overrides?: Overrides
   ) {
-    if (params.slippage) {
-      return await new FundAssetConvert(
-        this.chainId,
-        this.signer
-      ).executeAssetsConvertWithSlippage(maker, fundAddress, params, overrides);
-    } else {
-      return await new FundAssetConvert(
-        this.chainId,
-        this.signer
-      ).executeAssetsConvert(maker, fundAddress, params, overrides);
-    }
-  }
-
-  async getFundInfo(fundAddress: string, lpAddress?: string, withLP = true) {
-    return await new Fund(this.chainId, this.signer).getFunndInfo(
+    return await this.fund(fundAddress).executeAssetsConvert(
+      maker,
       fundAddress,
-      withLP,
-      lpAddress
+      params,
+      refundGas,
+      overrides
     );
   }
 
+  async getFundInfo(
+    fundAddress: string,
+    lpAddress?: string,
+    withAssets = true
+  ) {
+    return await this.fund(fundAddress).getFunndInfo(withAssets, lpAddress);
+  }
+
   async getFundAssets(fundAddress: string) {
-    return await new Fund(this.chainId, this.signer).getFundAssets(fundAddress);
+    return await this.fund(fundAddress).getFundAssets();
+  }
+
+  fund(fundAddress: string) {
+    return new Fund(this.chainId, this.signer, fundAddress);
   }
 }

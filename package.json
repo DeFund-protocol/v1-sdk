@@ -10,7 +10,16 @@
     "build": "tsc",
     "format": "prettier --config .prettierrc 'src/**/*.ts' --write"
   },
-  "keywords": ["DeFund", "DeFund protocol", "defund", "DeFi", "Ethereum", "fund", "web3", "ethers"],
+  "keywords": [
+    "DeFund",
+    "DeFund protocol",
+    "defund",
+    "DeFi",
+    "Ethereum",
+    "fund",
+    "web3",
+    "ethers"
+  ],
   "homepage": "https://defund.io",
   "bugs": "https://github.com/DeFund-protocol/v1-sdk/issues",
   "repository": {
@@ -21,7 +30,10 @@
   "license": "MIT",
   "dependencies": {
     "@defund-protocol/token-list": "^1.2.0",
-    "@uniswap/v3-sdk": "^3.9.0"
+    "@uniswap/sdk-core": "^3.2.2",
+    "@uniswap/v3-core": "^1.0.1",
+    "@uniswap/v3-sdk": "^3.9.0",
+    "mathjs": "^11.8.0"
   },
   "devDependencies": {
     "@ethersproject/abstract-provider": "^5.7.0",

@@ -2,16 +2,22 @@ import { default as ERC20ABI } from '../abis/ERC20.json' assert { type: 'json' }
 import { default as FundManagerABI } from '../abis/FundManager.json' assert { type: 'json' };
 import { default as FundViewerABI } from '../abis/FundViewer.json' assert { type: 'json' };
 import { default as PathFinderABI } from '../abis/PathFinder.json' assert { type: 'json' };
-import { default as SwapRouter02ABI } from '../abis/SwapRouter02.json' assert { type: 'json' };
+import { default as SwapRouter02ABI } from '../abis/uniswap/SwapRouter02.json' assert { type: 'json' };
+import { default as NonfungiblePositionManagerABI } from '../abis/uniswap/NonfungiblePositionManager.json' assert { type: 'json' };
 import { default as Weth9ABI } from '../abis/Weth9.json' assert { type: 'json' };
+import { abi as IUniswapV3FactoryABI } from '@uniswap/v3-core/artifacts/contracts/interfaces/IUniswapV3Factory.sol/IUniswapV3Factory.json' assert { type: 'json' };
+import { abi as IUniswapV3PoolABI } from '@uniswap/v3-core/artifacts/contracts/interfaces/IUniswapV3Pool.sol/IUniswapV3Pool.json' assert { type: 'json' };
 
 export {
   FundManagerABI,
   FundViewerABI,
-  SwapRouter02ABI,
   PathFinderABI,
-  Weth9ABI,
-  ERC20ABI
+  SwapRouter02ABI,
+  NonfungiblePositionManagerABI,
+  IUniswapV3FactoryABI,
+  IUniswapV3PoolABI,
+  ERC20ABI,
+  Weth9ABI
 };
 
 export enum SupportedChainId {
@@ -44,9 +50,16 @@ export const PathFinderAddress: AddressMap = {
   [SupportedChainId.MUMBAI]: '0xb20d7e3EFF4985bEdC2c37294BcEa6D3F28daC8f'
 };
 
-export const SwapRouterAddress: AddressMap = {
+export const SwapRouter02Address: AddressMap = {
   [SupportedChainId.MAINNET]: '0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45',
   [SupportedChainId.GOERLI]: '0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45',
   [SupportedChainId.MATIC]: '0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45',
   [SupportedChainId.MUMBAI]: '0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45'
+};
+
+export const NonfungiblePositionManagerAddress: AddressMap = {
+  [SupportedChainId.MAINNET]: '0xC36442b4a4522E871399CD717aBDD847Ab11FE88',
+  [SupportedChainId.GOERLI]: '0xC36442b4a4522E871399CD717aBDD847Ab11FE88',
+  [SupportedChainId.MATIC]: '0xC36442b4a4522E871399CD717aBDD847Ab11FE88',
+  [SupportedChainId.MUMBAI]: '0xC36442b4a4522E871399CD717aBDD847Ab11FE88'
 };

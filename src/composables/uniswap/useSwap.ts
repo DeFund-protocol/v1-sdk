@@ -1,15 +1,9 @@
 import { BigNumber, Overrides, Signer, constants } from 'ethers';
-import {
-  ERC20ABI,
-  FundManagerABI,
-  FundManagerAddress,
-  SwapRouter02ABI,
-  SwapRouterAddress
-} from '../../constants/contract';
+import { SwapRouter02ABI, SwapRouter02Address } from '../../constants/contract';
 import { NativeETHAddress, WethAddress } from '../../constants/token';
-import { useContract, useEncodeFuncData } from '../useContract';
+import { useEncodeFuncData } from '../useContract';
+import { Fund } from '../useFund';
 import { isEqualAddress } from '../useUtils';
-import { SendTransaction } from '../useWeb3';
 import { exactInputPath, exactOutputPath } from './usePathFinder';
 
 export type SwapParams = {
@@ -23,230 +17,230 @@ export type SwapParams = {
   expiration?: number;
 };
 
-export class UniswapSwap {
-  readonly chainId: number;
-  readonly signer: Signer;
-  readonly wethAddress: string;
-  readonly swapRouterAddress: string;
-  readonly fundManagerAddress: string;
+const executeSwap = async (
+  chainId: number,
+  signer: Signer,
+  maker: string,
+  fundAddress: string,
+  params: SwapParams,
+  refundGas?: boolean,
+  overrides?: Overrides
+) => {
+  const wethAddress = WethAddress[chainId];
+  const ethAmount = calcEthAmount(params, wethAddress);
+  const swapRouter02Address = SwapRouter02Address[chainId];
 
-  constructor(chainId: number, signer: Signer) {
-    this.chainId = chainId;
-    this.signer = signer;
-    this.wethAddress = WethAddress[chainId];
-    this.swapRouterAddress = SwapRouterAddress[chainId];
-    this.fundManagerAddress = FundManagerAddress[chainId];
-  }
-
-  async executeSwap(
-    maker: string,
-    fundAddress: string,
-    params: SwapParams,
-    overrides?: Overrides,
-    refundGas = false
-  ) {
-    const ethAmount = this.calcEthAmount(params);
-
-    let calldata: string;
-    switch (params.opType) {
-      case 'approveToken':
-        return await this.approveToken(maker, fundAddress, params, overrides);
-      case 'exactInput':
-        calldata = await this.exactInputCalldata(params, fundAddress);
-        break;
-      case 'exactOutput':
-        calldata = await this.exactOutPutCalldata(params, fundAddress);
-        break;
-      default:
-        throw new Error(`Invalid opType: ${params.opType}`);
-    }
-
-    // execute
-    const executeParams = [
+  try {
+    const calldata = await swapCalldata(
+      chainId,
+      signer,
       fundAddress,
-      this.swapRouterAddress,
+      params,
+      wethAddress
+    );
+
+    return await new Fund(chainId, signer, fundAddress).executeOrder(
+      swapRouter02Address,
+      calldata,
+      ethAmount,
+      maker,
+      refundGas,
+      overrides
+    );
+  } catch (e) {
+    throw e;
+  }
+};
+
+const swapCalldata = async (
+  chainId: number,
+  signer: Signer,
+  fundAddress: string,
+  params: SwapParams,
+  wethAddress: string
+) => {
+  switch (params.opType) {
+    case 'exactInput':
+      return await exactInputCalldata(
+        chainId,
+        signer,
+        params,
+        fundAddress,
+        wethAddress
+      );
+    case 'exactOutput':
+      return await exactOutPutCalldata(
+        chainId,
+        signer,
+        params,
+        fundAddress,
+        wethAddress
+      );
+    default:
+      throw new Error(`Invalid opType: ${params.opType}`);
+  }
+};
+
+const exactInputCalldata = async (
+  chainId: number,
+  signer: Signer,
+  params: SwapParams,
+  fundAddress: string,
+  wethAddress: string
+) => {
+  if (!params.amountIn) throw new Error('Invalid amountIn');
+
+  const trade = await exactInputPath(
+    params.tokenIn,
+    params.tokenOut,
+    params.amountIn,
+    chainId,
+    signer
+  );
+
+  const swapParams = {
+    recipient: calcRecipient(params, fundAddress, wethAddress),
+    path: trade.path,
+    amountIn: params.amountIn,
+    amountOutMinimum: calcAmountOutMinimum(
+      trade.expectedAmount,
+      params.slippage
+    )
+  };
+
+  const calldata = useEncodeFuncData(SwapRouter02ABI, 'exactInput', [
+    swapParams
+  ]);
+  if (!params.useNative) return calldata;
+  if (!isEqualAddress(params.tokenOut, wethAddress)) return calldata;
+
+  const unwrap = useEncodeFuncData(
+    SwapRouter02ABI,
+    'unwrapWETH9(uint256,address)',
+    [params.amountOut, fundAddress]
+  );
+
+  return useEncodeFuncData(SwapRouter02ABI, 'multicall(uint256,bytes[])', [
+    params.expiration,
+    [calldata, unwrap]
+  ]);
+};
+
+const exactOutPutCalldata = async (
+  chainId: number,
+  signer: Signer,
+  params: SwapParams,
+  fundAddress: string,
+  wethAddress: string
+) => {
+  if (!params.amountOut) throw new Error('Invalid amountOut');
+
+  const trade = await exactOutputPath(
+    params.tokenIn,
+    params.tokenOut,
+    params.amountOut,
+    chainId,
+    signer
+  );
+
+  const swapParams = {
+    recipient: calcRecipient(params, fundAddress, wethAddress),
+    path: trade.path,
+    amountOut: params.amountOut,
+    amountInMaximum: calcAmountInMaximum(trade.expectedAmount, params.slippage)
+  };
+
+  const output = useEncodeFuncData(SwapRouter02ABI, 'exactOutput', [
+    swapParams
+  ]);
+
+  if (!params.useNative) return output;
+
+  switch (true) {
+    case isEqualAddress(params.tokenIn, wethAddress):
+      const refund = useEncodeFuncData(SwapRouter02ABI, 'refundETH()', []);
+      return useEncodeFuncData(SwapRouter02ABI, 'multicall(uint256,bytes[])', [
+        params.expiration,
+        [output, refund]
+      ]);
+    case isEqualAddress(params.tokenOut, wethAddress):
+      const unwrap = useEncodeFuncData(
+        SwapRouter02ABI,
+        'unwrapWETH9(uint256,address)',
+        [params.amountOut, fundAddress]
+      );
+
+      return useEncodeFuncData(SwapRouter02ABI, 'multicall(uint256,bytes[])', [
+        params.expiration,
+        [output, unwrap]
+      ]);
+    default:
+      return output;
+  }
+};
+
+const swapMulticallCalldata = async (
+  chainId: number,
+  signer: Signer,
+  maker: string,
+  fundAddress: string,
+  params: SwapParams,
+  refundGas = false
+) => {
+  const wethAddress = WethAddress[chainId];
+  const ethAmount = calcEthAmount(params, wethAddress);
+  const swapRouter02Address = SwapRouter02Address[chainId];
+
+  try {
+    const calldata = await swapCalldata(
+      chainId,
+      signer,
+      fundAddress,
+      params,
+      wethAddress
+    );
+    return new Fund(chainId, signer, fundAddress).executeOrderCallData(
+      swapRouter02Address,
       calldata,
       ethAmount,
       maker,
       refundGas
-    ];
-
-    return await SendTransaction(
-      this.fundManagerAddress,
-      FundManagerABI,
-      'executeOrder',
-      executeParams,
-      overrides,
-      this.signer
     );
+  } catch (e) {
+    throw e;
   }
+};
 
-  async exactInputCalldata(params: SwapParams, recipient: string) {
-    if (!params.amountIn) throw new Error('Invalid amountIn');
+/*
+ * helper methods
+ */
+const calcEthAmount = (params: SwapParams, wethAddress: string) => {
+  if (!params.useNative) return constants.Zero;
+  if (!isEqualAddress(params.tokenIn, wethAddress)) return constants.Zero;
+  return params.amountIn;
+};
 
-    const trade = await exactInputPath(
-      params.tokenIn,
-      params.tokenOut,
-      params.amountIn,
-      this.chainId,
-      this.signer
-    );
+const calcRecipient = (
+  params: SwapParams,
+  recipient: string,
+  wethAddress: string
+) => {
+  if (!params.useNative) return recipient;
+  if (!isEqualAddress(params.tokenOut, wethAddress)) return recipient;
 
-    const swapParams = {
-      recipient: this.calcRecipient(params, recipient),
-      path: trade.path,
-      amountIn: params.amountIn,
-      amountOutMinimum: this.calcAmountOutMinimum(
-        trade.expectedAmount,
-        params.slippage
-      )
-    };
+  return NativeETHAddress;
+};
 
-    const calldata = this.encodeCalldata(SwapRouter02ABI, 'exactInput', [
-      swapParams
-    ]);
-    if (!params.useNative) return calldata;
-    if (!isEqualAddress(params.tokenOut, this.wethAddress)) return calldata;
+const calcAmountInMaximum = (expectedAmount: BigNumber, slippage: number) => {
+  return expectedAmount
+    .mul(BigNumber.from(1e4).add(BigNumber.from(slippage * 100)))
+    .div(BigNumber.from(1e4));
+};
 
-    const unwrap = this.encodeCalldata(
-      SwapRouter02ABI,
-      'unwrapWETH9(uint256,address)',
-      [params.amountOut, recipient]
-    );
+const calcAmountOutMinimum = (expectedAmount: BigNumber, slippage: number) => {
+  return expectedAmount
+    .mul(BigNumber.from(1e4))
+    .div(BigNumber.from(1e4).add(BigNumber.from(slippage * 100)));
+};
 
-    return this.encodeCalldata(SwapRouter02ABI, 'multicall(uint256,bytes[])', [
-      this.swapExpiration(params),
-      [calldata, unwrap]
-    ]);
-  }
-
-  async exactOutPutCalldata(params: SwapParams, recipient: string) {
-    if (!params.amountOut) throw new Error('Invalid amountOut');
-
-    const trade = await exactOutputPath(
-      params.tokenIn,
-      params.tokenOut,
-      params.amountOut,
-      this.chainId,
-      this.signer
-    );
-
-    const swapParams = {
-      recipient: this.calcRecipient(params, recipient),
-      path: trade.path,
-      amountOut: params.amountOut,
-      amountInMaximum: this.calcAmountInMaximum(
-        trade.expectedAmount,
-        params.slippage
-      )
-    };
-
-    const output = this.encodeCalldata(SwapRouter02ABI, 'exactOutput', [
-      swapParams
-    ]);
-
-    if (!params.useNative) return output;
-
-    switch (true) {
-      case isEqualAddress(params.tokenIn, this.wethAddress):
-        const refund = this.encodeCalldata(SwapRouter02ABI, 'refundETH()', []);
-        return this.encodeCalldata(
-          SwapRouter02ABI,
-          'multicall(uint256,bytes[])',
-          [this.swapExpiration(params), [output, refund]]
-        );
-      case isEqualAddress(params.tokenOut, this.wethAddress):
-        const unwrap = this.encodeCalldata(
-          SwapRouter02ABI,
-          'unwrapWETH9(uint256,address)',
-          [params.amountOut, recipient]
-        );
-
-        return this.encodeCalldata(
-          SwapRouter02ABI,
-          'multicall(uint256,bytes[])',
-          [this.swapExpiration(params), [output, unwrap]]
-        );
-      default:
-        return output;
-    }
-  }
-
-  async approveToken(
-    maker: string,
-    fundAddress: string,
-    params: any,
-    overrides?: Overrides,
-    refundGas = false
-  ) {
-    const contract = useContract(params.token, ERC20ABI, this.signer);
-    const allowance = await contract.allowance(
-      fundAddress,
-      this.swapRouterAddress
-    );
-
-    if (allowance.gte(constants.MaxUint256)) return [{}, null, null];
-
-    const calldata = this.approveTokenCalldata();
-
-    // execute
-    const executeParams = [
-      fundAddress,
-      params.token,
-      calldata,
-      0,
-      maker,
-      refundGas
-    ];
-
-    return await SendTransaction(
-      this.fundManagerAddress,
-      FundManagerABI,
-      'executeOrder',
-      executeParams,
-      overrides,
-      this.signer
-    );
-  }
-
-  approveTokenCalldata() {
-    return this.encodeCalldata(ERC20ABI, 'approve', [
-      this.swapRouterAddress,
-      constants.MaxUint256
-    ]);
-  }
-
-  swapExpiration(params: SwapParams) {
-    params?.expiration || Math.round(new Date().getTime() / 1000 + 10 * 60);
-  }
-
-  calcEthAmount(params: SwapParams) {
-    if (!params.useNative) return constants.Zero;
-    if (!isEqualAddress(params.tokenIn, this.wethAddress))
-      return constants.Zero;
-    return params.amountIn;
-  }
-
-  calcRecipient(params: SwapParams, recipient: string) {
-    if (!params.useNative) return recipient;
-    if (!isEqualAddress(params.tokenOut, this.wethAddress)) return recipient;
-
-    return NativeETHAddress;
-  }
-
-  calcAmountInMaximum(expectedAmount: BigNumber, slippage: number) {
-    return expectedAmount
-      .mul(BigNumber.from(1e4).add(BigNumber.from(slippage * 100)))
-      .div(BigNumber.from(1e4));
-  }
-
-  calcAmountOutMinimum(expectedAmount: BigNumber, slippage: number) {
-    return expectedAmount
-      .mul(BigNumber.from(1e4))
-      .div(BigNumber.from(1e4).add(BigNumber.from(slippage * 100)));
-  }
-
-  encodeCalldata(abi: any, method: string, params: any) {
-    return useEncodeFuncData(abi, method, params);
-  }
-}
+export { executeSwap, swapMulticallCalldata };
