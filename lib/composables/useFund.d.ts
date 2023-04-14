@@ -1,7 +1,7 @@
 import { BigNumber, Overrides, Signer } from 'ethers';
-import { SwapParams } from './uniswap/useSwap';
 import { ConvertParams } from './uniswap/useAssetsConvert';
 import { LpParams } from './uniswap/useLiquidityPool';
+import { SwapParams } from './uniswap/useSwap';
 export declare class Fund {
     readonly chainId: number;
     readonly signer: Signer;

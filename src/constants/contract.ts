@@ -1,12 +1,12 @@
-import { default as ERC20ABI } from '../abis/ERC20.json' assert { type: 'json' };
-import { default as FundManagerABI } from '../abis/FundManager.json' assert { type: 'json' };
-import { default as FundViewerABI } from '../abis/FundViewer.json' assert { type: 'json' };
-import { default as PathFinderABI } from '../abis/PathFinder.json' assert { type: 'json' };
-import { default as SwapRouter02ABI } from '../abis/uniswap/SwapRouter02.json' assert { type: 'json' };
-import { default as NonfungiblePositionManagerABI } from '../abis/uniswap/NonfungiblePositionManager.json' assert { type: 'json' };
-import { default as Weth9ABI } from '../abis/Weth9.json' assert { type: 'json' };
-import { default as IUniswapV3Factory } from '@uniswap/v3-core/artifacts/contracts/interfaces/IUniswapV3Factory.sol/IUniswapV3Factory.json' assert { type: 'json' };
-import { default as IUniswapV3Pool } from '@uniswap/v3-core/artifacts/contracts/interfaces/IUniswapV3Pool.sol/IUniswapV3Pool.json' assert { type: 'json' };
+import ERC20ABI from '../abis/ERC20.json' assert { type: 'json' };
+import FundManagerABI from '../abis/FundManager.json' assert { type: 'json' };
+import FundViewerABI from '../abis/FundViewer.json' assert { type: 'json' };
+import PathFinderABI from '../abis/PathFinder.json' assert { type: 'json' };
+import SwapRouter02ABI from '../abis/uniswap/SwapRouter02.json' assert { type: 'json' };
+import NonfungiblePositionManagerABI from '../abis/uniswap/NonfungiblePositionManager.json' assert { type: 'json' };
+import Weth9ABI from '../abis/Weth9.json' assert { type: 'json' };
+import IUniswapV3Factory from '@uniswap/v3-core/artifacts/contracts/interfaces/IUniswapV3Factory.sol/IUniswapV3Factory.json' assert { type: 'json' };
+import IUniswapV3Pool from '@uniswap/v3-core/artifacts/contracts/interfaces/IUniswapV3Pool.sol/IUniswapV3Pool.json' assert { type: 'json' };
 
 const IUniswapV3FactoryABI = IUniswapV3Factory.abi;
 const IUniswapV3PoolABI = IUniswapV3Pool.abi;

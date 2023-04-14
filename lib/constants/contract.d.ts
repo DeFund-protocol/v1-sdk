@@ -1,10 +1,10 @@
-import { default as ERC20ABI } from '../abis/ERC20.json';
-import { default as FundManagerABI } from '../abis/FundManager.json';
-import { default as FundViewerABI } from '../abis/FundViewer.json';
-import { default as PathFinderABI } from '../abis/PathFinder.json';
-import { default as SwapRouter02ABI } from '../abis/uniswap/SwapRouter02.json';
-import { default as NonfungiblePositionManagerABI } from '../abis/uniswap/NonfungiblePositionManager.json';
-import { default as Weth9ABI } from '../abis/Weth9.json';
+import ERC20ABI from '../abis/ERC20.json';
+import FundManagerABI from '../abis/FundManager.json';
+import FundViewerABI from '../abis/FundViewer.json';
+import PathFinderABI from '../abis/PathFinder.json';
+import SwapRouter02ABI from '../abis/uniswap/SwapRouter02.json';
+import NonfungiblePositionManagerABI from '../abis/uniswap/NonfungiblePositionManager.json';
+import Weth9ABI from '../abis/Weth9.json';
 declare const IUniswapV3FactoryABI: ({
     anonymous: boolean;
     inputs: {

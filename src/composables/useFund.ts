@@ -5,16 +5,14 @@ import {
   FundViewerABI,
   FundViewerAddress
 } from '../constants';
-import { useContract, useEncodeFuncData } from './useContract';
-import { getAddressFromSigner, sendTransaction } from './useWeb3';
-import { SwapParams } from './uniswap/useSwap';
 import { Uniswap } from './uniswap';
 import {
-  ConvertParams,
-  executeAssetsConvert,
-  executeAssetsConvertWithSlippage
+  ConvertParams
 } from './uniswap/useAssetsConvert';
 import { LpParams } from './uniswap/useLiquidityPool';
+import { SwapParams } from './uniswap/useSwap';
+import { useContract, useEncodeFuncData } from './useContract';
+import { getAddressFromSigner, sendTransaction } from './useWeb3';
 
 export class Fund {
   readonly chainId: number;
