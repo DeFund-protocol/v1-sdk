@@ -42,15 +42,15 @@ const sdk = new UniversalSDK(chainId, signer);
 
 #### Swap Details
 
-| Param      | Type      | Description                                                    |
-| ---------- | --------- | -------------------------------------------------------------- |
-| opType     | string    | `exactInput`, `exactOutput`                                    |
-| tokenIn    | Address   |                                                                |
-| tokenOut   | Address   |                                                                |
-| amountIn   | BigNumber | amountIn for exactInput, amountInMaximum for exactOutput       |
-| amountOut  | BigNumber | amountOutMinimum for exactInput, amountOut for exactOutput     |
-| useNative  | Boolean   | set to true if you want to swap to or from ETH instead of WETH |
-| expiration | number    | optional, default expires in 10 minutes                        |
+| Param      | Type      | Description                                                                             |
+| ---------- | --------- | --------------------------------------------------------------------------------------- |
+| opType     | string    | `exactInput`, `exactOutput`                                                             |
+| tokenIn    | Address   |                                                                                         |
+| tokenOut   | Address   |                                                                                         |
+| amountIn   | BigNumber | amountIn for exactInput, amountInMaximum for exactOutput                                |
+| amountOut  | BigNumber | amountOutMinimum for exactInput, amountOut for exactOutput                              |
+| useNative  | Boolean   | set to true if you want to swap to or from native Token instead of warpped native Token |
+| expiration | number    | optional, default expires in 10 minutes                                                 |
 
 #### Overrides
 
@@ -104,7 +104,7 @@ const convertDetails = {
   tokenIn: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2', // WETH Address on mainnet
   tokenOut: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48', // USDC Address on mainnet
   ratio: 1000, // 10%
-  useNative: true // use ETH
+  useNative: true
 };
 
 const overrides = {};
