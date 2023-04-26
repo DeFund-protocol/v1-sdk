@@ -65,7 +65,7 @@ const swapDetails = {
   tokenOut: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48', // USDC Address on mainnet
   amountIn: BigNumber.from('100000000000000000'), // 0.1 ETH
   amountOut: BigNumber.from('1000000'), // 1 USDC
-  useNative: true, // use ETH
+  useNative: true, // use native token, use ETH in this demo
   expiration: Math.round(new Date().getTime() / 1000 + 30 * 60) // 30 minutes
 };
 
@@ -87,14 +87,14 @@ const tx = await sdk.executeSwap(maker, fundAddress, swapDetails, overrides);
 
 #### Convert Details
 
-| Param      | Type    | Description                                                    |
-| ---------- | ------- | -------------------------------------------------------------- |
-| ratio      | number  | ratio of tokenIn                                               |
-| tokenIn    | Address |                                                                |
-| tokenOut   | Address |                                                                |
-| slippage   | number  | 1 for 1%, minimum is 0.01 for 0.01%                            |
-| useNative  | Boolean | set to true if you want to swap to or from ETH instead of WETH |
-| expiration | number  | optional, default expires in 10 minutes                        |
+| Param      | Type    | Description                                                                             |
+| ---------- | ------- | --------------------------------------------------------------------------------------- |
+| ratio      | number  | ratio of tokenIn                                                                        |
+| tokenIn    | Address |                                                                                         |
+| tokenOut   | Address |                                                                                         |
+| slippage   | number  | 1 for 1%, minimum is 0.01 for 0.01%                                                     |
+| useNative  | Boolean | set to true if you want to swap to or from native Token instead of warpped native Token |
+| expiration | number  | optional, default expires in 10 minutes                                                 |
 
 ```typescript
 const maker = signer.address;
