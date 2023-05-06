@@ -1,3 +1,4 @@
+import { BigNumber } from 'ethers';
 import { getAddress } from 'ethers/lib/utils';
 
 const isAddress = (value: any): boolean => {
@@ -16,4 +17,46 @@ const isEqualAddress = (address1: string, address2: string) => {
   );
 };
 
-export { isAddress, isEqualAddress };
+const formatDetailData = (data: any) => {
+  if (!data) return;
+  if (typeof data === 'string' || typeof data === 'number') return data;
+  if (data instanceof BigNumber) return data.toString();
+  if (data instanceof Array && data.length === 0) return data;
+
+  const keys = Object.keys(data);
+  if (keys.length === 0) return data;
+
+  const params: any = {};
+
+  for (let i = 0; i < Object.keys(data).length; i++) {
+    if (!isNaN(parseInt(keys[i]))) continue;
+
+    switch (true) {
+      case data[keys[i]] instanceof BigNumber:
+        params[keys[i]] = data[keys[i]].toString();
+        break;
+      case data[keys[i]] instanceof Array:
+        const isRealHash = Object.keys(data[keys[i]]).find((key: any) => {
+          return isNaN(parseInt(key));
+        });
+
+        if (isRealHash) {
+          params[keys[i]] = formatDetailData(data[keys[i]]);
+        } else {
+          const arrayData = [];
+          for (let j = 0; j < data[keys[i]].length; j++) {
+            arrayData.push(formatDetailData(data[keys[i]][j]));
+          }
+          params[keys[i]] = arrayData;
+        }
+
+        break;
+      default:
+        params[keys[i]] = data[keys[i]];
+    }
+  }
+
+  return params;
+};
+
+export { isAddress, isEqualAddress, formatDetailData };

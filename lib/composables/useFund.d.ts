@@ -11,8 +11,8 @@ export declare class Fund {
     constructor(chainId: number, signer: Signer, fundAddress: string);
     getFunndInfo(withLP: boolean, lpAddress?: string): Promise<any>;
     getFundAssets(): Promise<{
-        tokenBalances: any;
-        lpTokens: any;
+        tokenBalances: any[];
+        lpTokens: any[];
     }>;
     executeSwap(maker: string, fundAddress: string, params: SwapParams, refundGas?: boolean, overrides?: Overrides): Promise<any>;
     executeLP(maker: string, fundAddress: string, params: LpParams, refundGas?: boolean, overrides?: Overrides): Promise<any>;

@@ -12,8 +12,8 @@ export declare class UniversalSDK {
     executeAssetsConvert(maker: string, fundAddress: string, params: ConvertParams, refundGas?: boolean, overrides?: Overrides): Promise<any>;
     getFundInfo(fundAddress: string, lpAddress?: string, withAssets?: boolean): Promise<any>;
     getFundAssets(fundAddress: string): Promise<{
-        tokenBalances: any;
-        lpTokens: any;
+        tokenBalances: any[];
+        lpTokens: any[];
     }>;
     fund(fundAddress: string): Fund;
 }

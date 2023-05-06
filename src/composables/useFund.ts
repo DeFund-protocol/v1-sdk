@@ -6,12 +6,11 @@ import {
   FundViewerAddress
 } from '../constants';
 import { Uniswap } from './uniswap';
-import {
-  ConvertParams
-} from './uniswap/useAssetsConvert';
+import { ConvertParams } from './uniswap/useAssetsConvert';
 import { LpParams } from './uniswap/useLiquidityPool';
 import { SwapParams } from './uniswap/useSwap';
 import { useContract, useEncodeFuncData } from './useContract';
+import { formatDetailData } from './useUtils';
 import { getAddressFromSigner, sendTransaction } from './useWeb3';
 
 export class Fund {
@@ -44,10 +43,16 @@ export class Fund {
   async getFundAssets() {
     const assets = await this.getFunndInfo(true);
 
-    return {
-      tokenBalances: assets.tokenBalances,
-      lpTokens: assets.lpTokens
-    };
+    const tokenBalances = [];
+    for (let i = 0; i < assets.tokenBalances.length; i++) {
+      tokenBalances.push(formatDetailData(assets.tokenBalances[i]));
+    }
+
+    const lpTokens = [];
+    for (let i = 0; i < assets.lpTokens.length; i++) {
+      lpTokens.push(formatDetailData(assets.lpTokens[i]));
+    }
+    return { tokenBalances, lpTokens };
   }
 
   async executeSwap(
