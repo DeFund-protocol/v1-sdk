@@ -1,10 +1,11 @@
 {
   "name": "@defund-protocol/v1-sdk",
-  "version": "0.4.5",
+  "version": "0.4.6",
   "description": "DeFund Protocol v1 SDK",
   "main": "lib/index.cjs",
   "module": "lib/index.mjs",
   "types": "lib/index.d.ts",
+  "type": "module",
   "exports": {
     ".": {
       "require": "./lib/index.cjs",
@@ -14,7 +15,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc",
+    "build": "tsc && rollup -c",
     "format": "prettier --config .prettierrc 'src/**/*.ts' --write"
   },
   "keywords": [
@@ -40,13 +41,14 @@
     "@uniswap/sdk-core": "^3.2.2",
     "@uniswap/v3-core": "^1.0.1",
     "@uniswap/v3-sdk": "^3.9.0",
-    "mathjs": "^11.8.0",
-    "ethers": "^5.7.2"
+    "ethers": "^5.7.2",
+    "mathjs": "^11.8.0"
   },
   "devDependencies": {
     "@ethersproject/abstract-provider": "^5.7.0",
     "@rollup/plugin-json": "^6.0.0",
     "@rollup/plugin-typescript": "^11.1.0",
+    "microbundle": "^0.15.1",
     "prettier": "^2.8.7",
     "rollup": "^3.20.2",
     "tslib": "^2.5.0",
