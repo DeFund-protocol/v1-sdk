@@ -1,10 +1,19 @@
-import { BigNumber, Overrides, Signer, constants } from 'ethers';
+import {
+  BigNumber,
+  Overrides,
+  PayableOverrides,
+  Signer,
+  constants
+} from 'ethers';
 import {
   FundManagerABI,
   FundManagerAddress,
+  FundProxyABI,
+  FundProxyAddress,
   FundViewerABI,
   FundViewerAddress
 } from '../constants';
+import { WethAddress } from '../constants/token';
 import { Uniswap } from './uniswap';
 import { ConvertParams } from './uniswap/useAssetsConvert';
 import { LpParams } from './uniswap/useLiquidityPool';
@@ -18,6 +27,7 @@ export class Fund {
   readonly signer: Signer;
   readonly fundAddress: string;
   readonly fundManagerAddress: string;
+  readonly fundProxyAddress: string;
   readonly fundViewerAddress: string;
 
   constructor(chainId: number, signer: Signer, fundAddress: string) {
@@ -25,6 +35,7 @@ export class Fund {
     this.signer = signer;
     this.fundAddress = fundAddress;
     this.fundManagerAddress = FundManagerAddress[chainId];
+    this.fundProxyAddress = FundProxyAddress[chainId];
     this.fundViewerAddress = FundViewerAddress[chainId];
   }
 
@@ -168,4 +179,58 @@ export class Fund {
   }
 
   executeMulticallCalldata() {}
+
+  async executeBuyFund(
+    amount: BigNumber,
+    maker?: string,
+    overrides?: PayableOverrides
+  ) {
+    amount ||= constants.Zero;
+    maker ||= await getAddressFromSigner(this.signer);
+
+    const fundInfo = await this.getFunndInfo(true);
+
+    if (WethAddress[this.chainId] === fundInfo.underlyingToken) {
+      overrides ||= {};
+      overrides.value = amount;
+    }
+
+    const executeParams = [this.fundAddress, amount];
+
+    return await sendTransaction(
+      this.fundManagerAddress,
+      FundManagerABI,
+      'buy',
+      executeParams,
+      overrides,
+      this.signer
+    );
+  }
+
+  async executeSellFund(
+    amount: BigNumber,
+    maker?: string,
+    overrides?: PayableOverrides
+  ) {
+    amount ||= constants.Zero;
+    maker ||= await getAddressFromSigner(this.signer);
+
+    const fundInfo = await this.getFunndInfo(true);
+
+    if (WethAddress[this.chainId] === fundInfo.underlyingToken) {
+      overrides ||= {};
+      overrides.value = amount;
+    }
+
+    const executeParams = [this.fundAddress, amount];
+
+    return await sendTransaction(
+      this.fundProxyAddress,
+      FundProxyABI,
+      'sell',
+      executeParams,
+      overrides,
+      this.signer
+    );
+  }
 }

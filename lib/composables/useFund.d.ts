@@ -1,4 +1,4 @@
-import { BigNumber, Overrides, Signer } from 'ethers';
+import { BigNumber, Overrides, PayableOverrides, Signer } from 'ethers';
 import { ConvertParams } from './uniswap/useAssetsConvert';
 import { LpParams } from './uniswap/useLiquidityPool';
 import { SwapParams } from './uniswap/useSwap';
@@ -7,6 +7,7 @@ export declare class Fund {
     readonly signer: Signer;
     readonly fundAddress: string;
     readonly fundManagerAddress: string;
+    readonly fundProxyAddress: string;
     readonly fundViewerAddress: string;
     constructor(chainId: number, signer: Signer, fundAddress: string);
     getFunndInfo(withLP: boolean, lpAddress?: string): Promise<any>;
@@ -21,4 +22,6 @@ export declare class Fund {
     executeOrderCallData(target: string, calldata: string, ethAmount?: BigNumber, maker?: string, refundGas?: boolean): string;
     executeMulticall(executeParams: any[], overrides?: Overrides): Promise<any>;
     executeMulticallCalldata(): void;
+    executeBuyFund(amount: BigNumber, maker?: string, overrides?: PayableOverrides): Promise<any>;
+    executeSellFund(amount: BigNumber, maker?: string, overrides?: PayableOverrides): Promise<any>;
 }

@@ -1,0 +1,1094 @@
+[
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_weth",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_masterAccount",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_fundOracle",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_gasPriceOracle",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "daoAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "daoProfit",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address[]",
+        "name": "closeAddresses",
+        "type": "address[]"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "fund",
+        "type": "address"
+      }
+    ],
+    "name": "FundAllowLpUpdated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "fund",
+        "type": "address"
+      }
+    ],
+    "name": "FundAssetSold",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "fund",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "lp",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "unit",
+        "type": "uint256"
+      }
+    ],
+    "name": "FundBuy",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "fund",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "FundCollect",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "fund",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "bool",
+        "name": "flag",
+        "type": "bool"
+      }
+    ],
+    "name": "FundForbidBuyUpdated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "fund",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "nomination",
+        "type": "address"
+      }
+    ],
+    "name": "FundGpNominationAccepted",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "fund",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "nomination",
+        "type": "address"
+      }
+    ],
+    "name": "FundGpNominationUpdated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "fund",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "lp",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "unit",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "base",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "carry",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "dao",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "fee",
+        "type": "uint256"
+      }
+    ],
+    "name": "FundSell",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "fund",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "lp",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint24",
+        "name": "stopLoss",
+        "type": "uint24"
+      }
+    ],
+    "name": "FundStopLossUpdated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint8",
+        "name": "version",
+        "type": "uint8"
+      }
+    ],
+    "name": "Initialized",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "previousOwner",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
+    ],
+    "name": "OwnershipTransferred",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      }
+    ],
+    "name": "Paused",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      }
+    ],
+    "name": "Unpaused",
+    "type": "event"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "fund",
+        "type": "address"
+      }
+    ],
+    "name": "acceptGpNomination",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "fund",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "buy",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "fund",
+        "type": "address"
+      }
+    ],
+    "name": "collect",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "gp",
+        "type": "address"
+      },
+      {
+        "internalType": "bool",
+        "name": "isPublic",
+        "type": "bool"
+      },
+      {
+        "internalType": "address[]",
+        "name": "allowedLps",
+        "type": "address[]"
+      },
+      {
+        "internalType": "uint16",
+        "name": "managementFee",
+        "type": "uint16"
+      },
+      {
+        "internalType": "uint24[]",
+        "name": "carryBrackets",
+        "type": "uint24[]"
+      },
+      {
+        "internalType": "uint16[]",
+        "name": "carryRates",
+        "type": "uint16[]"
+      },
+      {
+        "internalType": "address",
+        "name": "underlyingToken",
+        "type": "address"
+      },
+      {
+        "internalType": "uint16",
+        "name": "maxLpCount",
+        "type": "uint16"
+      },
+      {
+        "internalType": "uint256",
+        "name": "firstBuyMinAmount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint32",
+        "name": "lockTime",
+        "type": "uint32"
+      },
+      {
+        "internalType": "uint16",
+        "name": "lockFee",
+        "type": "uint16"
+      }
+    ],
+    "name": "createAccount",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "fund",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "fund",
+        "type": "address"
+      }
+    ],
+    "name": "getFundDetail",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "gpNomination",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "underlyingToken",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "firstBuyMinAmount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address[]",
+            "name": "allowedLps",
+            "type": "address[]"
+          },
+          {
+            "internalType": "bool",
+            "name": "isPublic",
+            "type": "bool"
+          },
+          {
+            "internalType": "bool",
+            "name": "forbidBuy",
+            "type": "bool"
+          },
+          {
+            "internalType": "uint16",
+            "name": "maxLpCount",
+            "type": "uint16"
+          },
+          {
+            "internalType": "uint24[]",
+            "name": "carryBrackets",
+            "type": "uint24[]"
+          },
+          {
+            "internalType": "uint16[]",
+            "name": "carryRates",
+            "type": "uint16[]"
+          },
+          {
+            "internalType": "uint16",
+            "name": "managementFee",
+            "type": "uint16"
+          },
+          {
+            "internalType": "uint16",
+            "name": "lockFee",
+            "type": "uint16"
+          },
+          {
+            "internalType": "uint32",
+            "name": "lockTime",
+            "type": "uint32"
+          },
+          {
+            "internalType": "uint32",
+            "name": "since",
+            "type": "uint32"
+          },
+          {
+            "internalType": "uint16",
+            "name": "lpCount",
+            "type": "uint16"
+          },
+          {
+            "internalType": "uint256",
+            "name": "ethBalance",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "totalValue",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "totalUnit",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "finalNav",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "paidDaoProfitAmount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "paidCarriedInterestAmount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "totalManagementFeeAmount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "collectedManagementFeeAmount",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct FundProxyData",
+        "name": "data",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "fund",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "lp",
+        "type": "address"
+      }
+    ],
+    "name": "getFundLpDetail",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "totalAmount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "totalUnit",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint24",
+            "name": "stopLoss",
+            "type": "uint24"
+          },
+          {
+            "internalType": "uint24",
+            "name": "buyUnitIndex",
+            "type": "uint24"
+          },
+          {
+            "internalType": "uint256",
+            "name": "buyUnitLeft",
+            "type": "uint256"
+          },
+          {
+            "components": [
+              {
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "unit",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "time",
+                "type": "uint256"
+              }
+            ],
+            "internalType": "struct LpBuyAction[]",
+            "name": "lpBuyActions",
+            "type": "tuple[]"
+          },
+          {
+            "components": [
+              {
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "unit",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "time",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "base",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "carry",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "dao",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "fee",
+                "type": "uint256"
+              }
+            ],
+            "internalType": "struct LpSellAction[]",
+            "name": "lpSellActions",
+            "type": "tuple[]"
+          }
+        ],
+        "internalType": "struct LpDetail",
+        "name": "data",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "fund",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "skip",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "size",
+        "type": "uint256"
+      }
+    ],
+    "name": "getFundLps",
+    "outputs": [
+      {
+        "internalType": "address[]",
+        "name": "list",
+        "type": "address[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_manager",
+        "type": "address"
+      }
+    ],
+    "name": "initialize",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes[]",
+        "name": "data",
+        "type": "bytes[]"
+      }
+    ],
+    "name": "multicall",
+    "outputs": [
+      {
+        "internalType": "bytes[]",
+        "name": "results",
+        "type": "bytes[]"
+      }
+    ],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "owner",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "pause",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "paused",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "renounceOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "fund",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "lp",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "ratio",
+        "type": "uint256"
+      },
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "sellType",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "minPriority",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "lastRatio",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256[]",
+            "name": "selectPriority",
+            "type": "uint256[]"
+          },
+          {
+            "internalType": "uint256[]",
+            "name": "selectRatio",
+            "type": "uint256[]"
+          },
+          {
+            "internalType": "address",
+            "name": "underlying",
+            "type": "address"
+          },
+          {
+            "internalType": "bytes[]",
+            "name": "paths",
+            "type": "bytes[]"
+          },
+          {
+            "internalType": "uint24",
+            "name": "fee",
+            "type": "uint24"
+          }
+        ],
+        "internalType": "struct PrioritySellParams",
+        "name": "params",
+        "type": "tuple"
+      }
+    ],
+    "name": "sell",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "fund",
+        "type": "address"
+      },
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "sellType",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "minPriority",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "lastRatio",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256[]",
+            "name": "selectPriority",
+            "type": "uint256[]"
+          },
+          {
+            "internalType": "uint256[]",
+            "name": "selectRatio",
+            "type": "uint256[]"
+          },
+          {
+            "internalType": "address",
+            "name": "underlying",
+            "type": "address"
+          },
+          {
+            "internalType": "bytes[]",
+            "name": "paths",
+            "type": "bytes[]"
+          },
+          {
+            "internalType": "uint24",
+            "name": "fee",
+            "type": "uint24"
+          }
+        ],
+        "internalType": "struct PrioritySellParams",
+        "name": "params",
+        "type": "tuple"
+      },
+      {
+        "internalType": "address",
+        "name": "refundRecipient",
+        "type": "address"
+      }
+    ],
+    "name": "sellAssets",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
+    ],
+    "name": "transferOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "unpause",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "fund",
+        "type": "address"
+      },
+      {
+        "internalType": "address[]",
+        "name": "lps",
+        "type": "address[]"
+      }
+    ],
+    "name": "updateAllowLps",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "addr",
+        "type": "address"
+      },
+      {
+        "internalType": "bool",
+        "name": "allow",
+        "type": "bool"
+      }
+    ],
+    "name": "updateCloseAddress",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "addr",
+        "type": "address"
+      }
+    ],
+    "name": "updateDaoAddress",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "profit",
+        "type": "uint256"
+      }
+    ],
+    "name": "updateDaoProfit",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "fund",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "value",
+        "type": "uint256"
+      }
+    ],
+    "name": "updateFirstBuyMinAmount",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "fund",
+        "type": "address"
+      },
+      {
+        "internalType": "bool",
+        "name": "flag",
+        "type": "bool"
+      }
+    ],
+    "name": "updateForbidBuy",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "fund",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "nomination",
+        "type": "address"
+      }
+    ],
+    "name": "updateGpNomination",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "fund",
+        "type": "address"
+      },
+      {
+        "internalType": "uint16",
+        "name": "value",
+        "type": "uint16"
+      }
+    ],
+    "name": "updateMaxLpCount",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "fund",
+        "type": "address"
+      },
+      {
+        "internalType": "uint24",
+        "name": "value",
+        "type": "uint24"
+      }
+    ],
+    "name": "updateStopLoss",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "weth9",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  }
+]
