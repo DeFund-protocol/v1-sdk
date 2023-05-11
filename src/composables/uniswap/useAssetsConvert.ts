@@ -58,7 +58,7 @@ const executeAssetsConvertWithSlippage = async (
   );
   if (!tokenIn) throw new Error('Invalid tokenIn');
 
-  const amountIn = tokenIn.balance
+  const amountIn = BigNumber.from(tokenIn.balance)
     .mul(BigNumber.from(params.ratio))
     .div(BigNumber.from(1e4));
 
