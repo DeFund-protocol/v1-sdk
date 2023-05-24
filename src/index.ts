@@ -3,6 +3,15 @@ import { SwapParams } from './composables';
 import { LpParams } from './composables/uniswap/useLiquidityPool';
 import { ConvertParams } from './composables/uniswap/useAssetsConvert';
 import { Fund } from './composables/useFund';
+import { useContract } from './composables/useContract',
+import { FundViewerABI, FundViewerAddress } from './constants/contract'
+
+export enum Role {
+  MANAGER = 1,
+  OPERATOR = 2,
+  INVESTOR = 3,
+  INVITED = 4
+}
 
 export class UniversalSDK {
   readonly chainId: number;
@@ -13,6 +22,11 @@ export class UniversalSDK {
     this.signer = signer;
 
     if (!this.signer.provider) throw new Error('invalid signer or provider');
+  }
+
+  async getFundList(maker: string, role: Role) {
+    const viewr = useContract(FundViewerAddress[this.chainId], FundViewerABI, this.signer);
+    return await viewr.getFundsData(maker, role, false);
   }
 
   async executeSwap(

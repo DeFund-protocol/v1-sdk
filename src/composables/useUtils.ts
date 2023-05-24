@@ -1,5 +1,7 @@
-import { BigNumber } from 'ethers';
+import { BigNumber, ethers } from 'ethers';
 import { getAddress } from 'ethers/lib/utils';
+import { FeeAmount } from '@uniswap/v3-sdk';
+import { WethAddress } from '../constants/token';
 
 const isAddress = (value: any): boolean => {
   try {
@@ -59,4 +61,50 @@ const formatDetailData = (data: any) => {
   return params;
 };
 
-export { isAddress, isEqualAddress, formatDetailData };
+const FEE_SIZE = 3;
+
+function encodePath(path: string[], fees: FeeAmount[]): string {
+  if (path.length != fees.length + 1) {
+    throw new Error('path/fee lengths do not match');
+  }
+
+  let encoded = '0x';
+  for (let i = 0; i < fees.length; i++) {
+    // 20 byte encoding of the address
+    encoded += path[i].slice(2);
+    // 3 byte encoding of the fee
+    encoded += fees[i].toString(16).padStart(2 * FEE_SIZE, '0');
+  }
+  // encode the final token
+  encoded += path[path.length - 1].slice(2);
+
+  return encoded.toLowerCase();
+}
+
+// Merge ETH balance to WETH & remove ETH from list
+function mergedTokenBalances(chainId: number, tokenBalances: any[]) {
+  const ethBalance = tokenBalances.find((item: any) =>
+    isEqualAddress(item.token, ethers.constants.AddressZero)
+  );
+  const wethBalance = Object.assign(
+    {},
+    tokenBalances.find((item: any) =>
+      isEqualAddress(item.token, WethAddress[chainId])
+    )
+  );
+  if (ethBalance && wethBalance) {
+    wethBalance.balance = wethBalance.balance.add(ethBalance.balance);
+    wethBalance.value = wethBalance.value.add(ethBalance.value);
+  }
+  const otherTokens = tokenBalances.filter(
+    (item: any) =>
+      !isEqualAddress(item.token, ethers.constants.AddressZero) &&
+      !isEqualAddress(item.token, WethAddress[chainId])
+  );
+  if (wethBalance) {
+    return [...otherTokens, wethBalance];
+  }
+  return otherTokens;
+}
+
+export { isAddress, isEqualAddress, formatDetailData, encodePath, mergedTokenBalances };
