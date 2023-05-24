@@ -7,6 +7,7 @@ import ethers, {
   constants
 } from 'ethers';
 import {
+  ERC20ABI,
   FundManagerABI,
   FundManagerAddress,
   FundProxyABI,
@@ -16,6 +17,7 @@ import {
 } from '../constants';
 import { WethAddress } from '../constants/token';
 import { Uniswap } from './uniswap';
+import { ApproveParams, tokenNeedApprove } from './uniswap/useApproveToken';
 import { ConvertParams } from './uniswap/useAssetsConvert';
 import { LpParams } from './uniswap/useLiquidityPool';
 import { exactInputPath } from './uniswap/usePathFinder';
@@ -203,6 +205,28 @@ export class Fund {
   }
 
   executeMulticallCalldata() {}
+
+  async executeApproveToken(
+    params: ApproveParams,
+    maker: string,
+    fundAddress: string,
+    overrides?: Overrides
+  ) {
+    maker ||= await getAddressFromSigner(this.signer);
+
+    const needApprove = tokenNeedApprove(this.signer, params.token, fundAddress, this.fundProxyAddress, params.amount || constants.MaxInt256);
+    if (!needApprove) return;
+
+    const approveParams = [this.fundProxyAddress, params.amount || constants.MaxInt256]
+    return await sendTransaction(
+      params.token,
+      ERC20ABI,
+      'approve',
+      approveParams,
+      overrides,
+      this.signer
+    );
+  }
 
   async executeBuyFund(
     amount: BigNumber,

@@ -187,6 +187,67 @@ const witAssets = false;
 const assets = await sdk.getFundAssets(fundAddress, lpAddress, withAssets);
 ```
 
+### Approve Token
+
+```typescript
+const maker = signer.address;
+const fundAddress = 'your fund address';
+
+const tx = await sdk.executeApproveToken(maker, fundAddress, {token: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48'});
+```
+
+If approve is not required, tx returns null, otherwise returns the transaction.
+
+### Buy Fund
+
+```typescript
+const maker = signer.address;
+const fundAddress = 'your fund address';
+const amount = BigNumber.from("10000000000000000") // 0.01 ETH
+
+const tx = await sdk.executeBuyFund(
+  maker,
+  fundAddress,
+  amount,
+);
+```
+
+### Sell Fund
+
+```typescript
+const maker = signer.address;
+const fundAddress = 'your fund address';
+const amount = BigNumber.from("10000000000000000") // 0.01 ETH
+
+const tx = await sdk.executeSellFund(
+  maker,
+  fundAddress,
+  10, // 10 percent
+);
+```
+
+### Get Your Funds list
+
+#### Role
+| Role     | Value | Description           |
+| -------- | ----- | --------------------- |
+| Manager  | 1     | funds you manage      |
+| Operator | 2     | funds you can operate |
+| Investor | 3     | funds you invest in   |
+
+```typescript
+  const managerList = await sdk.getFundList(signer.address, 1);
+  const operatorList = await sdk.getFundList(signer.address, 2);
+  const investorList = await sdk.getFundList(signer.address, 3);
+```
+
+### Get Fund's Lps
+
+```typescript
+const fundAddress = 'your fund address';
+const lps = await sdk.getFundInvestors(fundAddress);
+```
+
 ### Examples
 
 Examples can be found at: [Examples](https://github.com/DeFund-protocol/defund-examples)
