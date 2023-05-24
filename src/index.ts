@@ -1,7 +1,8 @@
 import { Overrides, Signer } from 'ethers';
 import { SwapParams } from './composables';
-import { LpParams } from './composables/uniswap/useLiquidityPool';
+import { ApproveParams } from './composables/uniswap/useApproveToken';
 import { ConvertParams } from './composables/uniswap/useAssetsConvert';
+import { LpParams } from './composables/uniswap/useLiquidityPool';
 import { Fund } from './composables/useFund';
 import { useContract } from './composables/useContract',
 import { FundViewerABI, FundViewerAddress } from './constants/contract'
@@ -72,6 +73,21 @@ export class UniversalSDK {
       maker,
       fundAddress,
       params,
+      refundGas,
+      overrides
+    );
+  }
+
+  async executeApproveToken(
+    maker: string,
+    fundAddress: string,
+    params: ApproveParams,
+    refundGas?: boolean,
+    overrides?: Overrides
+  ) {
+    return await this.fund(fundAddress).executeApproveToken(
+      params,
+      maker,
       refundGas,
       overrides
     );

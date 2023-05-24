@@ -1,4 +1,5 @@
 import { BigNumber, Overrides, PayableOverrides, Signer } from 'ethers';
+import { ApproveParams } from './uniswap/useApproveToken';
 import { ConvertParams } from './uniswap/useAssetsConvert';
 import { LpParams } from './uniswap/useLiquidityPool';
 import { SwapParams } from './uniswap/useSwap';
@@ -22,6 +23,7 @@ export declare class Fund {
     executeOrderCallData(target: string, calldata: string, ethAmount?: BigNumber, maker?: string, refundGas?: boolean): string;
     executeMulticall(executeParams: any[], overrides?: Overrides): Promise<any>;
     executeMulticallCalldata(): void;
+    executeApproveToken(params: ApproveParams, maker: string, refundGas?: boolean, overrides?: Overrides): Promise<any>;
     executeBuyFund(amount: BigNumber, maker?: string, overrides?: PayableOverrides): Promise<any>;
     executeSellFund(amount: BigNumber, maker?: string, overrides?: PayableOverrides): Promise<any>;
 }
