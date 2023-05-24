@@ -26,12 +26,8 @@ export class UniversalSDK {
   }
 
   async getFundList(maker: string, role: Role) {
-    const viewr = useContract(
-      FundViewerAddress[this.chainId],
-      FundViewerABI,
-      this.signer
-    );
-    return await viewr.getFundsData(maker, role, false);
+    const viewer = useContract(FundViewerAddress[this.chainId], FundViewerABI, this.signer);
+    return await viewer.getFundsData(maker, role, false);
   }
 
   async executeSwap(
@@ -133,6 +129,10 @@ export class UniversalSDK {
 
   async getFundAssets(fundAddress: string) {
     return await this.fund(fundAddress).getFundAssets();
+  }
+
+  async getFundInvestors(fundAddress: string, page = 0, pageSize = 100) {
+    return await this.fund(fundAddress).getFundInvistors(page, pageSize);
   }
 
   fund(fundAddress: string) {

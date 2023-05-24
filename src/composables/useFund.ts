@@ -77,6 +77,20 @@ export class Fund {
     return { tokenBalances, lpTokens };
   }
 
+  async getFundInvistors(page = 0, pageSize = 100) {
+    const viewer = useContract(
+      this.fundViewerAddress,
+      FundViewerABI,
+      this.signer
+    );
+    const results = await viewer.getFundLpDetailInfos(
+      this.fundAddress,
+      pageSize * page,
+      pageSize
+    );
+    return results.filter((item: any) => item.lpAddr !== constants.AddressZero);
+  }
+
   async executeSwap(
     maker: string,
     fundAddress: string,
