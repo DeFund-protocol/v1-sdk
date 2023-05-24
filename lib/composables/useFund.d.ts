@@ -17,6 +17,7 @@ export declare class Fund {
         tokenBalances: any[];
         lpTokens: any[];
     }>;
+    getFundInvistors(page?: number, pageSize?: number): Promise<any>;
     executeSwap(maker: string, fundAddress: string, params: SwapParams, refundGas?: boolean, overrides?: Overrides): Promise<any>;
     executeLP(maker: string, fundAddress: string, params: LpParams, refundGas?: boolean, overrides?: Overrides): Promise<any>;
     executeAssetsConvert(maker: string, fundAddress: string, params: ConvertParams, refundGas?: boolean, overrides?: Overrides): Promise<any>;

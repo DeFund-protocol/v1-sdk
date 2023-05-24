@@ -26,5 +26,6 @@ export declare class UniversalSDK {
         tokenBalances: any[];
         lpTokens: any[];
     }>;
+    getFundInvestors(fundAddress: string, page?: number, pageSize?: number): Promise<any>;
     fund(fundAddress: string): Fund;
 }
