@@ -117,6 +117,43 @@ const tx = await sdk.executeAssetsConvert(
 );
 ```
 
+### ApproveToken
+
+#### Approve Token Params
+
+| Param          | Type           | Description         |
+| -------------- | -------------- | ------------------- |
+| maker          | Address        | your signer address |
+| fundAddress    | Address        | your fund address   |
+| approveDetails | ApproveDetails |                     |
+| overrides      | Overrides      |                     |
+
+#### Approve Details
+
+| Param  | Type      | Description                          |
+| ------ | --------- | ------------------------------------ |
+| opType | string    | locked to `fund` for now             |
+| token  | Address   | your token address                   |
+| amount | BigNumber | Optional, default value is MaxInt256 |
+
+```typescript
+const maker = signer.address;
+const fundAddress = 'your fund address';
+const approveDetails = {
+  opType: 'fund',
+  token: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2', // WETH Address on mainnet
+};
+
+const overrides = {};
+
+const tx = await sdk.executeApproveToken(
+  maker,
+  fundAddress,
+  approveDetails,
+  overrides
+);
+```
+
 ### GetFundAssets
 
 You can use this method to get the asset information of the fund

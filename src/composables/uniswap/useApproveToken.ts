@@ -55,7 +55,11 @@ const approveTokenCalldata = async (
   try {
     // approve amount, default is constants.MaxUint256
     const amount = params.amount || constants.MaxUint256;
-    const targetAddress = getTargetAddressFromOpType(chainId, params.opType);
+    const targetAddress = getTargetAddressFromOpType(
+      chainId,
+      params.opType,
+      fundAddress
+    );
 
     const needApprove = await tokenNeedApprove(
       signer,
@@ -117,13 +121,16 @@ const tokenNeedApprove = async (
  */
 const getTargetAddressFromOpType = (
   chainId: number,
-  opType: string
+  opType: string,
+  fundAddress: string
 ): string => {
   switch (opType) {
     case 'swap':
       return SwapRouter02Address[chainId];
     case 'lp':
       return NonfungiblePositionManagerAddress[chainId];
+    case 'fund':
+      return fundAddress;
     default:
       throw new Error(`Invalid opType for approve: ${opType}`);
   }
