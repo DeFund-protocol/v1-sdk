@@ -525,7 +525,7 @@ const addLiquidityCalldataSingle = async (
   );
   const ethAmount = calcEthAmount(params, wethAddress);
   const nonfungiblePositionManagerAddress =
-  NonfungiblePositionManagerAddress[chainId];
+    NonfungiblePositionManagerAddress[chainId];
 
   return new Fund(chainId, signer, fundAddress).executeOrderCallData(
     nonfungiblePositionManagerAddress,

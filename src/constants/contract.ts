@@ -44,7 +44,7 @@ export const FundProxyAddress: AddressMap = {
   [SupportedChainId.MAINNET]: '0x46274846AD09d8B82d42c89A7A01bE2d9d9a3121',
   [SupportedChainId.MATIC]: '0xa1E2F1123FCfd7FcC947bAaaBB7DD71EECaC2664',
   [SupportedChainId.GOERLI]: '0x1f5eB9b48d15d9692368312cE994590B286381Be',
-  [SupportedChainId.MUMBAI]: '0xE4170E35b61BE7A7C1276c771aeB5F1C1454d002',
+  [SupportedChainId.MUMBAI]: '0xE4170E35b61BE7A7C1276c771aeB5F1C1454d002'
 };
 
 export const FundViewerAddress: AddressMap = {

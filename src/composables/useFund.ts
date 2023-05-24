@@ -15,6 +15,7 @@ import {
 } from '../constants';
 import { WethAddress } from '../constants/token';
 import { Uniswap } from './uniswap';
+import { ApproveParams, approveToken } from './uniswap/useApproveToken';
 import { ConvertParams } from './uniswap/useAssetsConvert';
 import { LpParams } from './uniswap/useLiquidityPool';
 import { SwapParams } from './uniswap/useSwap';
@@ -179,6 +180,25 @@ export class Fund {
   }
 
   executeMulticallCalldata() {}
+
+  async executeApproveToken(
+    params: ApproveParams,
+    maker: string,
+    refundGas?: boolean,
+    overrides?: Overrides
+  ) {
+    maker ||= await getAddressFromSigner(this.signer);
+
+    return await approveToken(
+      this.chainId,
+      this.signer,
+      maker,
+      this.fundAddress,
+      params,
+      refundGas,
+      overrides
+    );
+  }
 
   async executeBuyFund(
     amount: BigNumber,
