@@ -1,11 +1,12 @@
-import { BigNumber, Overrides, Signer } from 'ethers';
+import { BigNumber, Overrides, Signer, constants } from 'ethers';
 import { SwapParams } from './composables';
-import { ApproveParams } from './composables/uniswap/useApproveToken';
+import { ApproveParams, tokenNeedApprove } from './composables/uniswap/useApproveToken';
 import { ConvertParams } from './composables/uniswap/useAssetsConvert';
 import { LpParams } from './composables/uniswap/useLiquidityPool';
 import { useContract } from './composables/useContract';
 import { Fund } from './composables/useFund';
-import { FundViewerABI, FundViewerAddress } from './constants/contract';
+import { sendTransaction } from './composables/useWeb3';
+import { ERC20ABI, FundViewerABI, FundViewerAddress } from './constants/contract';
 
 export enum Role {
   MANAGER = 1,
@@ -82,14 +83,20 @@ export class UniversalSDK {
     maker: string,
     fundAddress: string,
     params: ApproveParams,
-    refundGas?: boolean,
     overrides?: Overrides
   ) {
-    return await this.fund(fundAddress).executeApproveToken(
-      params,
-      maker,
-      refundGas,
-      overrides
+
+    const needApprove = tokenNeedApprove(this.signer, params.token, fundAddress, fundAddress, params.amount || constants.Zero);
+    if (!needApprove) return;
+
+    const approveParams = [fundAddress, params.amount || constants.MaxInt256]
+    return await sendTransaction(
+      params.token,
+      ERC20ABI,
+      'approve',
+      approveParams,
+      overrides,
+      this.signer
     );
   }
 

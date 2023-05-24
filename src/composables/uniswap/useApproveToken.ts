@@ -57,8 +57,7 @@ const approveTokenCalldata = async (
     const amount = params.amount || constants.MaxUint256;
     const targetAddress = getTargetAddressFromOpType(
       chainId,
-      params.opType,
-      fundAddress
+      params.opType
     );
 
     const needApprove = await tokenNeedApprove(
@@ -69,7 +68,7 @@ const approveTokenCalldata = async (
       amount
     );
 
-    if (needApprove) return '';
+    if (!needApprove) return '';
     return useEncodeFuncData(ERC20ABI, 'approve', [targetAddress, amount]);
   } catch (e) {
     throw e;
@@ -111,7 +110,13 @@ const tokenNeedApprove = async (
   const token = useContract(tokenAddress, ERC20ABI, signer);
   if (!token) throw new Error('Invalid token found');
 
-  const allowance: BigNumber = await token.allowance(fundAddress, spender);
+  let allowance = constants.Zero;
+  if (spender === fundAddress) {
+    const sender = await signer.getAddress();
+    allowance = await token.allowance(sender, spender);
+  } else {
+    allowance = await token.allowance(fundAddress, spender);
+  }
 
   return allowance.lt(amount);
 };
@@ -121,16 +126,13 @@ const tokenNeedApprove = async (
  */
 const getTargetAddressFromOpType = (
   chainId: number,
-  opType: string,
-  fundAddress: string
+  opType: string
 ): string => {
   switch (opType) {
     case 'swap':
       return SwapRouter02Address[chainId];
     case 'lp':
       return NonfungiblePositionManagerAddress[chainId];
-    case 'fund':
-      return fundAddress;
     default:
       throw new Error(`Invalid opType for approve: ${opType}`);
   }

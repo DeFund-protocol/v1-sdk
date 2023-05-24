@@ -18,7 +18,7 @@ export declare class UniversalSDK {
     executeSwap(maker: string, fundAddress: string, params: SwapParams, refundGas?: boolean, overrides?: Overrides): Promise<any>;
     executeLP(maker: string, fundAddress: string, params: LpParams, refundGas?: boolean, overrides?: Overrides): Promise<any>;
     executeAssetsConvert(maker: string, fundAddress: string, params: ConvertParams, refundGas?: boolean, overrides?: Overrides): Promise<any>;
-    executeApproveToken(maker: string, fundAddress: string, params: ApproveParams, refundGas?: boolean, overrides?: Overrides): Promise<any>;
+    executeApproveToken(maker: string, fundAddress: string, params: ApproveParams, overrides?: Overrides): Promise<any>;
     executeBuyFund(maker: string, fundAddress: string, amount: BigNumber, overrides?: Overrides): Promise<any>;
     executeSellFund(maker: string, fundAddress: string, percentage: number, overrides?: Overrides): Promise<import("ethers").ContractTransaction>;
     getFundInfo(fundAddress: string, lpAddress?: string, withAssets?: boolean): Promise<any>;
