@@ -1,6 +1,6 @@
 {
   "name": "@defund-protocol/v1-sdk",
-  "version": "0.4.8",
+  "version": "0.4.9",
   "description": "DeFund Protocol v1 SDK",
   "main": "lib/index.cjs",
   "module": "lib/index.mjs",
