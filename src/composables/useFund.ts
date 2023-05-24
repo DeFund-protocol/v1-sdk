@@ -1,3 +1,4 @@
+import { FeeAmount } from '@uniswap/v3-sdk';
 import ethers, {
   BigNumber,
   Overrides,
@@ -13,7 +14,6 @@ import {
   FundViewerABI,
   FundViewerAddress
 } from '../constants';
-import { FeeAmount } from '@uniswap/v3-sdk';
 import { WethAddress } from '../constants/token';
 import { Uniswap } from './uniswap';
 import { ApproveParams, approveToken } from './uniswap/useApproveToken';
@@ -24,8 +24,8 @@ import { SwapParams } from './uniswap/useSwap';
 import { useContract, useEncodeFuncData } from './useContract';
 import { useToken } from './useToken';
 import {
-  formatDetailData,
   encodePath,
+  formatDetailData,
   isEqualAddress,
   mergedTokenBalances
 } from './useUtils';
@@ -228,8 +228,8 @@ export class Fund {
     const executeParams = [this.fundAddress, amount];
 
     return await sendTransaction(
-      this.fundManagerAddress,
-      FundManagerABI,
+      this.fundProxyAddress,
+      FundProxyABI,
       'buy',
       executeParams,
       overrides,

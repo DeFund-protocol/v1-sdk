@@ -1,11 +1,11 @@
-import { Overrides, Signer } from 'ethers';
+import { BigNumber, Overrides, Signer } from 'ethers';
 import { SwapParams } from './composables';
 import { ApproveParams } from './composables/uniswap/useApproveToken';
 import { ConvertParams } from './composables/uniswap/useAssetsConvert';
 import { LpParams } from './composables/uniswap/useLiquidityPool';
+import { useContract } from './composables/useContract';
 import { Fund } from './composables/useFund';
-import { useContract } from './composables/useContract',
-import { FundViewerABI, FundViewerAddress } from './constants/contract'
+import { FundViewerABI, FundViewerAddress } from './constants/contract';
 
 export enum Role {
   MANAGER = 1,
@@ -26,7 +26,11 @@ export class UniversalSDK {
   }
 
   async getFundList(maker: string, role: Role) {
-    const viewr = useContract(FundViewerAddress[this.chainId], FundViewerABI, this.signer);
+    const viewr = useContract(
+      FundViewerAddress[this.chainId],
+      FundViewerABI,
+      this.signer
+    );
     return await viewr.getFundsData(maker, role, false);
   }
 
@@ -89,6 +93,32 @@ export class UniversalSDK {
       params,
       maker,
       refundGas,
+      overrides
+    );
+  }
+
+  async executeBuyFund(
+    maker: string,
+    fundAddress: string,
+    amount: BigNumber,
+    overrides?: Overrides
+  ) {
+    return await this.fund(fundAddress).executeBuyFund(
+      amount,
+      maker,
+      overrides
+    );
+  }
+
+  async executeSellFund(
+    maker: string,
+    fundAddress: string,
+    percentage: number,
+    overrides?: Overrides
+  ) {
+    return await this.fund(fundAddress).executeSellFund(
+      percentage,
+      maker,
       overrides
     );
   }

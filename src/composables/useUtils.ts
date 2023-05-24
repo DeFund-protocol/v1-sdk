@@ -107,4 +107,10 @@ function mergedTokenBalances(chainId: number, tokenBalances: any[]) {
   return otherTokens;
 }
 
-export { isAddress, isEqualAddress, formatDetailData, encodePath, mergedTokenBalances };
+export {
+  isAddress,
+  isEqualAddress,
+  formatDetailData,
+  encodePath,
+  mergedTokenBalances
+};

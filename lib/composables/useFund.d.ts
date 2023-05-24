@@ -1,4 +1,4 @@
-import { BigNumber, Overrides, PayableOverrides, Signer } from 'ethers';
+import ethers, { BigNumber, Overrides, PayableOverrides, Signer } from 'ethers';
 import { ApproveParams } from './uniswap/useApproveToken';
 import { ConvertParams } from './uniswap/useAssetsConvert';
 import { LpParams } from './uniswap/useLiquidityPool';
@@ -10,6 +10,7 @@ export declare class Fund {
     readonly fundManagerAddress: string;
     readonly fundProxyAddress: string;
     readonly fundViewerAddress: string;
+    private mergePercentage;
     constructor(chainId: number, signer: Signer, fundAddress: string);
     getFunndInfo(withLP: boolean, lpAddress?: string): Promise<any>;
     getFundAssets(): Promise<{
@@ -25,5 +26,8 @@ export declare class Fund {
     executeMulticallCalldata(): void;
     executeApproveToken(params: ApproveParams, maker: string, refundGas?: boolean, overrides?: Overrides): Promise<any>;
     executeBuyFund(amount: BigNumber, maker?: string, overrides?: PayableOverrides): Promise<any>;
-    executeSellFund(amount: BigNumber, maker?: string, overrides?: PayableOverrides): Promise<any>;
+    private calculateAmountMargin;
+    private fallbackPath;
+    private getSellParams;
+    executeSellFund(percentage: number, maker?: string, overrides?: PayableOverrides): Promise<ethers.ContractTransaction>;
 }
